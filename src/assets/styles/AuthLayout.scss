@@ -1,0 +1,20 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    border: none;
+    outline: none;
+  }
+
+.all-login {
+    min-width: 350px;
+    .section-login {
+        width: 100%;
+        margin: auto;
+        padding: 0;
+        background-color: gainsboro;
+        background-size: cover;
+        padding-top: 50px;
+        min-height: calc(100vh - 30px);
+    }
+}

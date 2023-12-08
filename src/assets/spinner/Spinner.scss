@@ -1,0 +1,30 @@
+$background-color_1: #333;
+
+.spinner {
+  margin: 100px auto;
+  width: 40px;
+  height: calc(100vh - 400px);
+  position: relative;
+  .cube1 {
+    background-color: $background-color_1;
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    -webkit-animation: sk-cubemove 1.8s infinite ease-in-out;
+    animation: sk-cubemove 1.8s infinite ease-in-out;
+  }
+  .cube2 {
+    background-color: $background-color_1;
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    -webkit-animation: sk-cubemove 1.8s infinite ease-in-out;
+    animation: sk-cubemove 1.8s infinite ease-in-out;
+    -webkit-animation-delay: -0.9s;
+    animation-delay: -0.9s;
+  }
+}

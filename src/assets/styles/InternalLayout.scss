@@ -1,0 +1,30 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    border: none;
+    outline: none;
+  }
+
+.all-internal {
+    min-width: 350px;
+    .internal-main {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        align-items: flex-start;
+        width: 100%;
+        padding-top: 50px;
+        min-height: calc(100vh - 30px);
+        .main {
+            background-color: gainsboro;
+            width: 75%;
+            min-height: calc(100vh - 80px);
+            @media (max-width: 992px) {
+                width: 100%;
+              }
+            
+        }
+    }
+}

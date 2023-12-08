@@ -1,0 +1,21 @@
+.q-and-a-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  
+    .qa-item {
+      margin-bottom: 20px;
+  
+      h2 {
+        font-size: 1.5em;
+        margin-bottom: 10px;
+      }
+  
+      p {
+        font-size: 1.2em;
+        color: #555;
+      }
+    }
+  }
+  

@@ -1,0 +1,25 @@
+// Companies.scss
+
+.card {
+    transition: transform 0.3s; // تحديد الانتقال عند التحويل
+  
+    &:hover {
+      transform: scale(1.05); // تكبير البطاقة عند التحويل
+    }
+  
+    img {
+      width: 100%;
+      height: 200px; // تحديد ارتفاع الصورة
+      object-fit: cover; // تكبير/تصغير الصورة لتناسب الحاوية دون تشويه
+    }
+  }
+  
+  .container {
+    margin-top: 20px;
+  
+    .row {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+  

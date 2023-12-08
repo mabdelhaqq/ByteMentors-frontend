@@ -1,0 +1,65 @@
+.app-menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    position: fixed;
+    top: 50px;
+    left: 0;
+    padding: 0;
+    overflow-x: hidden;
+    z-index: 10;
+    width: 25%;
+    min-height: 100vh;
+    &.light {
+      background-color: white;
+  
+      .title-link-menu, .item-icon-menu {
+        color: black;  // لون النص والأيقونات في الوضع الفاتح
+      }
+    }
+  
+    &.dark {
+      background-color: #2c2c2c;
+  
+      .title-link-menu, .item-icon-menu {
+        color: white;  // لون النص والأيقونات في الوضع الداكن
+      }
+    }
+  
+    @media (max-height: 600px) {
+      height: 100vh;
+      overflow-y: auto;
+    }
+  }
+  
+  .link-menu {
+    text-decoration: none;
+    width: 100%;
+    padding: 10px 0;
+  
+    &:hover {
+      background-color: #f0f0f0;
+    }
+  
+    .item-links-menu {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      width: 100%;
+      padding: 10px 0;
+  
+      .item-icon-menu {
+        font-size: 20px;
+        margin: 0 15px;
+        width: 20px;
+        height: 20px;
+      }
+  
+      .title-link-menu {
+        font-size: 18px;
+        font-weight: bold;
+      }
+    }
+  }
+  

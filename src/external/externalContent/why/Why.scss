@@ -1,0 +1,41 @@
+.why-container {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+  
+    h1 {
+      font-size: 2em;
+      margin-bottom: 10px;
+    }
+  
+    p {
+      font-size: 1.2em;
+      color: #555;
+      margin-bottom: 20px;
+    }
+  
+    .project-description,
+    .project-goals,
+    .project-services,
+    .user-types {
+      margin-bottom: 40px;
+  
+      h2 {
+        font-size: 1.5em;
+        margin-bottom: 10px;
+      }
+  
+      ul {
+        list-style-type: none;
+        padding: 0;
+  
+        li {
+          font-size: 1.1em;
+          margin-bottom: 10px;
+          color: #555;
+        }
+      }
+    }
+  }
+  
