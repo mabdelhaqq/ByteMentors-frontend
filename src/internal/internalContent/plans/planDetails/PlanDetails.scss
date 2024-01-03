@@ -1,0 +1,28 @@
+.plan-details-page {
+    max-width: 800px;
+    margin: 20px auto;
+
+    .buttons-container {
+      display: flex;
+      justify-content: flex-start;
+      margin-bottom: 20px;
+      button {
+        margin-right: 5px;
+      }
+    }
+
+    .plan-info {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 10px;
+
+      h3 {
+        margin-bottom: 5px;
+      }
+
+      p {
+        margin: 5px 0;
+      }
+    }
+  }

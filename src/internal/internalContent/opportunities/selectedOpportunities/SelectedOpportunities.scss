@@ -1,0 +1,46 @@
+.s-opp-page {
+    max-width: 800px;
+    margin: 20px auto;
+    .opp-card {
+        width: 100%;
+        border-radius: 10px;
+        border: 1px solid #ccc;
+        padding: 15px 10px;
+        margin-bottom: 5px;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        cursor: pointer;
+        &:hover {
+            background-color: #f6f6f6;
+        }
+        .fontaw {
+            .icon-accepted {
+                color: green;
+                font-size: 30px;
+            }
+            .icon-rejected {
+                color: red;
+                font-size: 30px;
+            }
+            .icon-pending {
+                color: orange;
+                font-size: 30px;
+            }
+        }
+        .information {
+            .status-accepted {
+                color: green;
+            }
+
+            .status-rejected {
+                color: red;
+            }
+
+            .status-pending {
+                color: orange;
+            }
+        }
+    }
+}

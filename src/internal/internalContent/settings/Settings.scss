@@ -23,16 +23,12 @@
       button {
         width: 100%;
         padding: 10px;
-        background-color: #3498db;
         color: #fff;
         border: none;
         border-radius: 5px;
         cursor: pointer;
         font-size: 1rem;
   
-        &:hover {
-          background-color: #007bb5;
-        }
       }
       .buttonlang {
         width: 48%;  
@@ -49,5 +45,4 @@
       margin-top: 10px;
       font-size: 0.8rem;
     }
-
   }

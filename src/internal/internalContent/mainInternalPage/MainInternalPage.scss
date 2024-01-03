@@ -1,5 +1,3 @@
-/* استيراد أي استايل آخر إذا لزم الأمر */
-
 .main-internal-page {
     width: 100%;
     min-height: calc(100vh - 90px);
@@ -8,6 +6,15 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    .admin-div {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .admin {
+        width: 350px;
+        height: 350px;
+      }
+    }
   
     .content {
       text-align: center;

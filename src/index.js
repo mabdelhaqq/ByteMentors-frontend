@@ -7,13 +7,16 @@ import 'react-toastify/dist/ReactToastify.css';
 import { EmailProvider } from './helpers/EmailContext';
 import { ThemeProvider } from './helpers/ThemeContext';
 import { UserTypeProvider } from './helpers/UserTypeContext';
+import { StudentProvider } from './helpers/StudentContext';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <EmailProvider>
       <ThemeProvider>
         <UserTypeProvider>
-          <AppRoutes />
+          <StudentProvider>
+            <AppRoutes />
+          </StudentProvider>
         </UserTypeProvider>
       </ThemeProvider>
     </EmailProvider>

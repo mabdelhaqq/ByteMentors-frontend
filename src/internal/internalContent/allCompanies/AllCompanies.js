@@ -1,0 +1,133 @@
+import React, { useState, useEffect } from 'react';
+import { Container, Row, Col, Button } from 'react-bootstrap';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import './AllCompanies.scss';
+import Spinner from '../../../assets/spinner/Spinner';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { ConfirmDialog } from 'primereact/confirmdialog';
+import 'primereact/resources/themes/saga-blue/theme.css';
+import 'primereact/resources/primereact.min.css';
+import 'primeicons/primeicons.css';
+import user from "../../../assets/images/user.png"
+
+const AllCompanies = () => {
+  const [companies, setCompanies] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [deletingCompany, setDeletingCompany] = useState(null);
+  const [displayDialog, setDisplayDialog] = useState(false);
+  const [companyIdToDelete, setCompanyIdToDelete] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchCompanies();
+  }, []);
+
+  const fetchCompanies = async () => {
+    try {
+      const response = await axios.get('http://localhost:3001/companies');
+      setCompanies(response.data);
+    } catch (error) {
+      console.error('Error fetching companies:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCompanyClick = (companyId) => {
+    navigate(`/home/personalcompanyn/${companyId}`);
+  };
+
+  const confirmDelete = (companyId) => {
+    setCompanyIdToDelete(companyId);
+    setDisplayDialog(true);
+  };
+
+  const handleDeleteClick = async () => {
+    setDisplayDialog(false);
+    setDeletingCompany(companyIdToDelete);
+
+    try {
+      const response = await axios.delete(`http://localhost:3001/company/${companyIdToDelete}`);
+      if (response.data.success) {
+        setCompanies(companies.filter(company => company._id !== companyIdToDelete));
+      } else {
+        console.error('Failed to delete company account');
+      }
+    } catch (error) {
+      console.error('Error deleting company account', error);
+    } finally {
+      setDeletingCompany(null);
+    }
+  };
+
+  const filteredCompanies = companies.filter(company =>
+    company.companyName.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  return (
+    <>
+      {loading ? (
+        <Spinner />
+      ) : (
+        <Container className="all-companies-page">
+          <div className="searchb">
+            <FontAwesomeIcon icon={faSearch} className="icon-search" />
+            <input
+              placeholder="Search"
+              className="input-search"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+          <Row>
+            {filteredCompanies.length > 0 ? (
+              filteredCompanies.map((company) => (
+                <Col md={12} key={company._id}>
+                  <div className="company-card" onClick={() => handleCompanyClick(company._id)}>
+                  <div className='img-com col-2'>
+                      <img src={company.profileImage || user} alt={company.companyName} />
+                    </div>
+                    <div className='name-com col-6'>
+                    <h6 className="company-name">{company.companyName}</h6>
+                    </div>
+                    <div className='delete-btn col-4'>
+                    <Button
+                      variant="danger"
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        confirmDelete(company._id);
+                      }}
+                      className="btn-delete"
+                      disabled={deletingCompany === company._id}
+                    >
+                      {deletingCompany === company._id ? 'Deleting...' : 'Delete Account'}
+                    </Button>
+                    </div>
+                  </div>
+                </Col>
+              ))
+            ) : (
+              <h2>There are no matching companies</h2>
+            )}
+          </Row>
+          <ConfirmDialog
+            visible={displayDialog}
+            onHide={() => setDisplayDialog(false)}
+            message="Are you sure you want to delete this account?"
+            header="Confirmation"
+            icon="pi pi-exclamation-triangle"
+            acceptLabel="Yes"
+            rejectLabel="No"
+            acceptClassName="p-button-danger"
+            accept={handleDeleteClick}
+          />
+        </Container>
+      )}
+    </>
+  );
+};
+
+export default AllCompanies;

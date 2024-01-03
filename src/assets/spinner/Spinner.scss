@@ -1,30 +1,18 @@
-$background-color_1: #333;
-
-.spinner {
-  margin: 100px auto;
-  width: 40px;
-  height: calc(100vh - 400px);
+.loader {
+  width: 50px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  padding: 6px;
+  color: gray;
+  background:
+    conic-gradient(from 135deg at top,currentColor 90deg, #0000 0) 0 calc(50% - 4px)/17px 8.5px,
+    radial-gradient(farthest-side at bottom left,#0000 calc(100% - 6px),currentColor calc(100% - 5px) 99%,#0000) top right/50%  50% content-box content-box,
+    radial-gradient(farthest-side at top        ,#0000 calc(100% - 6px),currentColor calc(100% - 5px) 99%,#0000) bottom   /100% 50% content-box content-box;
+  background-repeat: no-repeat;
+  animation: l11 1s infinite linear;
+  margin: 25% auto;
   position: relative;
-  .cube1 {
-    background-color: $background-color_1;
-    width: 15px;
-    height: 15px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    -webkit-animation: sk-cubemove 1.8s infinite ease-in-out;
-    animation: sk-cubemove 1.8s infinite ease-in-out;
-  }
-  .cube2 {
-    background-color: $background-color_1;
-    width: 15px;
-    height: 15px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    -webkit-animation: sk-cubemove 1.8s infinite ease-in-out;
-    animation: sk-cubemove 1.8s infinite ease-in-out;
-    -webkit-animation-delay: -0.9s;
-    animation-delay: -0.9s;
-  }
+}
+@keyframes l11{ 
+  100%{transform: rotate(1turn)}
 }

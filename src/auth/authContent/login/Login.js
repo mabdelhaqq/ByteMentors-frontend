@@ -10,6 +10,7 @@ import { useUserType } from '../../../helpers/UserTypeContext';
 const Login = () => {
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [loading, setLoading] = useState(false);
   const { email, setLoggedInEmail } = useEmail();
   const { setUser } = useUserType();
   const navigate = useNavigate();
@@ -18,9 +19,11 @@ const Login = () => {
     setLoggedInEmail('');
   }, []);
 
-
   const handleLogin = async (e) => {
     e.preventDefault();
+    setErrorMessage('');
+    setLoading(true);
+
     try {
       const response = await axios.post('http://localhost:3001/login', {
         email: email,
@@ -39,32 +42,39 @@ const Login = () => {
         const linkedin = nameResponsefi.data.linkedin;
         const nameResponses = await axios.get(`http://localhost:3001/getprofileimage?email=${email}`);
         const profileImage = nameResponses.data.profileImage;
+        const nameResponsid = await axios.get(`http://localhost:3001/getid?email=${email}`);
+        const _id = nameResponsid.data._id;
         const nameResponsete = await axios.get(`http://localhost:3001/getgithub?email=${email}`);
         const github = nameResponsete.data.github;
+        const nameResponseel = await axios.get(`http://localhost:3001/getgender?email=${email}`);
+        const gender = nameResponseel.data.gender;
+        const nameResponsen = await axios.get(`http://localhost:3001/getgraduate?email=${email}`);
+        const graduate = nameResponsen.data.graduate;
         const nameResponsese = await axios.get(`http://localhost:3001/getuniversity?email=${email}`);
         const university = nameResponsese.data.university;
         const nameResponsee = await axios.get(`http://localhost:3001/getgraduationyear?email=${email}`);
         const graduationYear = nameResponsee.data.graduationyear;
-        const nameResponsen = await axios.get(`http://localhost:3001/getgraduate?email=${email}`);
-        const graduate = nameResponsen.data.graduate;
-        const nameResponseel = await axios.get(`http://localhost:3001/getgender?email=${email}`);
-        const gender = nameResponseel.data.gender;
         const nameResponsetw = await axios.get(`http://localhost:3001/getpreferredfield?email=${email}`);
         const preferredField = nameResponsetw.data.preferredField;
         const nameResponsethth = await axios.get(`http://localhost:3001/getskill?email=${email}`);
         const skills = nameResponsethth.data.skill;
-        setLoggedInEmail(email, name, city, phoneNumber, description, linkedin, profileImage,
-             github, university, graduationYear, graduate, gender, preferredField, skills );
-        setUser(response.data.userType); // تحديث نوع المستخدم باستخدام setUser
+        const nameResponsecv = await axios.get(`http://localhost:3001/getcv?email=${email}`);
+        const cv = nameResponsecv.data.cv;
+        setLoggedInEmail(email, name, city, phoneNumber, description, linkedin, profileImage, _id, 
+          github, gender, graduate, university, graduationYear, preferredField, skills, cv);
+        setUser(response.data.userType);
         navigate('/home');
       } else {
         setErrorMessage('Email or password incorrect');
       }
     } catch (error) {
       setErrorMessage('An error occurred while logging in. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
-    return (
+
+  return (
     <div className="login-container">
       <div className="login-form col-12 col-lg-8">
         <h2>Login to your account</h2>
@@ -79,7 +89,7 @@ const Login = () => {
           type="text"
           placeholder="Your email"
           value={email}
-          onChange={(e) => setLoggedInEmail(e.target.value)} // تحديث حالة البريد الإلكتروني
+          onChange={(e) => setLoggedInEmail(e.target.value)}
         />
         <input
           type="password"
@@ -90,8 +100,8 @@ const Login = () => {
         <div className="password-options">
           <Link to='/login/forgetemail' className='forget'><p>Forget password?</p></Link>
         </div>
-        <button className="signin-button" onClick={handleLogin}>
-          Login
+        <button className="signin-button" onClick={handleLogin} disabled={loading}>
+          {loading ? 'Loading...' : 'Login'}
         </button>
         {errorMessage && <p className="error-message">{errorMessage}</p>}
       </div>

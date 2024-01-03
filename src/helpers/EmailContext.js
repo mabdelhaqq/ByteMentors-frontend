@@ -10,13 +10,15 @@ export const EmailProvider = ({ children }) => {
   const [description, setDescription] = useState('');
   const [linkedin, setLinkedin] = useState('');
   const [profileImage, setProfileImage] = useState('');
+  const [_id, set_id] = useState('');
   const [github, setGithub] = useState('');
+  const [gender, setGender] = useState('');
+  const [graduate, setGraduate] = useState(false);
   const [university, setUniversity] = useState('');
   const [graduationYear, setGraduationYear] = useState('');
-  const [graduate, setGraduate] = useState(false);
-  const [gender, setGender] = useState('');
-  const [preferredField, setPreferredField] = useState([]);
+  const [preferredField, setPreferredField] = useState('');
   const [skills, setSkills] = useState([]);
+  const [cv, setCv] = useState('');
 
   const setLoggedInEmail = (
     userEmail,
@@ -26,13 +28,15 @@ export const EmailProvider = ({ children }) => {
     description,
     linkedin,
     profileImage,
+    _id,
     github,
+    gender,
+    graduate,
     university,
     graduationYear,
-    graduate,
-    gender,
     preferredField,
-    skills
+    skills,
+    cv,
   ) => {
     setEmail(userEmail);
     setUsername(username);
@@ -41,13 +45,15 @@ export const EmailProvider = ({ children }) => {
     setDescription(description);
     setLinkedin(linkedin);
     setProfileImage(profileImage);
+    set_id(_id);
     setGithub(github);
+    setGender(gender);
+    setGraduate(graduate);
     setUniversity(university);
     setGraduationYear(graduationYear);
-    setGraduate(graduate);
-    setGender(gender);
     setPreferredField(preferredField);
     setSkills(skills);
+    setCv(cv);
   };
 
   return (
@@ -59,13 +65,15 @@ export const EmailProvider = ({ children }) => {
       description,
       linkedin,
       profileImage,
+      _id,
       github,
+      gender,
+      graduate,
       university,
       graduationYear,
-      graduate,
-      gender,
       preferredField,
       skills,
+      cv,
       setLoggedInEmail
     }}>
       {children}

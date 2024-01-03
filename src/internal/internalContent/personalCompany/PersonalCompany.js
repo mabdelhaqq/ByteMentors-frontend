@@ -14,6 +14,7 @@ const PersonalCompany = () => {
     description,
     linkedin,
     profileImage,
+    _id,
     setLoggedInEmail,
   } = useEmail();
 
@@ -59,7 +60,8 @@ const PersonalCompany = () => {
           editedInfo.phoneNumber,
           editedInfo.description,
           editedInfo.linkedin,
-          editedInfo.profileImage
+          editedInfo.profileImage,
+          _id,
         );
       } else {
         console.error('Failed to update company info');
@@ -103,7 +105,7 @@ const PersonalCompany = () => {
       linkedin,
       profileImage,
     });
-  }, [email, username, city, phoneNumber, description, linkedin, profileImage]);
+  }, [email, username, city, phoneNumber, description, linkedin, profileImage, _id]);
 
   return (
     <Container className="personal-company-page">
@@ -112,131 +114,135 @@ const PersonalCompany = () => {
           <div className="info-section">
             {!editMode && (
               <>
-                <Button
-                  variant="info"
-                  onClick={handleEditClick}
-                  className="edit-profile-button"
-                >
-                  Edit Profile
-                </Button>
-                {profileImage && (
-                  <div className="profile-image-preview-container">
-                    <img
+                <Col md={12} className='img-edit'>
+                  <div className="image col-6">
+                    {editedInfo.profileImage && (
+                      <img
                       src={editedInfo.profileImage}
-                      alt="Profile Preview"
+                      alt="Profile"
                       className="profile-image-preview"
-                    />
+                      />
+                    )}
                   </div>
-                )}
-                <h2>{editedInfo.companyName}</h2>
-                <p>Email: {email}</p>
-                <p>Location: {editedInfo.city}</p>
-                <p>Phone Number: {editedInfo.phoneNumber}</p>
-                {editedInfo.linkedin && (
-                  <div className="sub-info">
-                    <p>linkedin: </p>
-                    <a
-                      href={editedInfo.linkedin}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <Button
+                    onClick={handleEditClick}
+                    className="edit-profile-button col-6"
                     >
-                      {editedInfo.linkedin}
-                    </a>
+                      Edit Profile
+                    </Button>
+                </Col>
+                <Col md={12}>
+                  <div className="name">
+                  <h2>{editedInfo.companyName}</h2>
                   </div>
-                )}
-                {editedInfo.description && (
-                  <>
-                    <hr />
+                </Col>
+                <Col md={12}>
+                  <div className="location-phone">
+                    <div className='location col-6'><p><b>location: </b>{editedInfo.city}</p></div>
+                    <div className='phone col-6'><p><b>Phone Number: </b>{editedInfo.phoneNumber}</p></div>
+                  </div>
+                </Col>
+                <Col md={12}>
+                  <div className="email-linkedin">
+                    <div className='email col-6'><p><b>Email: </b>{email}</p></div>
+                    {editedInfo.linkedin &&(<div className='linkedin col-6'><p><b>Linkedin: </b><a href={editedInfo.linkedin} target="_blank" rel="noopener noreferrer">{editedInfo.linkedin}</a></p></div>)}
+                  </div>
+                </Col>
+                {editedInfo.description && (<Col md={12}>
+                  <div className="description">
                     <p>{editedInfo.description}</p>
-                  </>
+                  </div>
+                </Col>
                 )}
               </>
             )}
           </div>
           {editMode && (
-            <Form>
-              <Form.Group controlId="formProfileImage">
-                <Form.Label>Profile Image</Form.Label>
-                <Form.Control
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageChange}
+          <Form>
+            <Form.Group className='form-group' controlId="formProfileImage">
+              <Form.Label>Profile Image</Form.Label>
+              <Form.Control
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+              />
+              {editedInfo.profileImage && (
+                <img
+                  src={editedInfo.profileImage}
+                  alt="Profile Preview"
+                  className="profile-image-preview"
                 />
-                {editedInfo.profileImage && (
-                  <img
-                    src={editedInfo.profileImage}
-                    alt="Profile Preview"
-                    className="profile-image-preview"
-                  />
-                )}
-              </Form.Group>
-              <Form.Group controlId="formCompanyName">
-                <Form.Label>Company Name</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Enter company name"
-                  name="companyName"
-                  value={editedInfo.companyName}
-                  onChange={handleInputChange}
-                />
-              </Form.Group>
-              <Form.Group controlId="formCity">
-                <Form.Label>City</Form.Label>
-                <Form.Control
-                  as="select"
-                  name="city"
-                  value={editedInfo.city}
-                  onChange={handleInputChange}
-                >
-                  <option value="">Select City</option>
-                  {cities.map((city, index) => (
-                    <option key={index} value={city}>
-                      {city}
-                    </option>
-                  ))}
-                </Form.Control>
-              </Form.Group>
-              <Form.Group controlId="formPhoneNumber">
-                <Form.Label>Phone Number</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Enter phone number"
-                  name="phoneNumber"
-                  value={editedInfo.phoneNumber}
-                  onChange={handleInputChange}
-                />
-              </Form.Group>
-              <Form.Group controlId="formDescription">
-                <Form.Label>Description</Form.Label>
-                <Form.Control
-                  as="textarea"
-                  placeholder="Enter description"
-                  name="description"
-                  value={editedInfo.description}
-                  onChange={handleInputChange}
-                />
-              </Form.Group>
-              <Form.Group controlId="formLinkedin">
-                <Form.Label>LinkedIn</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Enter LinkedIn URL"
-                  name="linkedin"
-                  value={editedInfo.linkedin || ''}
-                  onChange={handleInputChange}
-                />
-              </Form.Group>
-              <Button variant="primary" onClick={handleSaveClick}>
-                Save
-              </Button>
-              <Button variant="secondary" onClick={handleCancelClick}>
-                Cancel
-              </Button>
-            </Form>
-          )}
-        </Col>
-      </Row>
-    </Container>
+              )}
+            </Form.Group>
+            <Form.Group className='form-group' controlId="formCompanyName">
+              <Form.Label>Company Name</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter company name"
+                name="companyName"
+                value={editedInfo.companyName}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
+            <Form.Group controlId="formCity" className='form-group'>
+              <Form.Label>City</Form.Label>
+              <Form.Control
+                as="select"
+                name="city"
+                value={editedInfo.city}
+                onChange={handleInputChange}
+              >
+                <option value="">Select City</option>
+                {cities.map((city, index) => (
+                  <option key={index} value={city}>
+                    {city}
+                  </option>
+                ))}
+              </Form.Control>
+            </Form.Group>
+            <Form.Group controlId="formPhoneNumber" className='form-group'>
+              <Form.Label>Phone Number</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter phone number"
+                name="phoneNumber"
+                value={editedInfo.phoneNumber}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
+            <Form.Group controlId="formDescription" className='form-group'>
+              <Form.Label>Description</Form.Label>
+              <Form.Control
+                as="textarea"
+                placeholder="Enter description"
+                name="description"
+                value={editedInfo.description}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
+            <Form.Group controlId="formLinkedin" className='form-group'>
+              <Form.Label>LinkedIn</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter LinkedIn URL"
+                name="linkedin"
+                value={editedInfo.linkedin || ''}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
+            <div className='btn-group'>
+            <Button variant="primary" className='btn' onClick={handleSaveClick}>
+              Save
+            </Button>
+            <Button variant="secondary" className='btn' onClick={handleCancelClick}>
+              Cancel
+            </Button>
+            </div>
+          </Form>
+        )}
+      </Col>
+    </Row>
+  </Container>
   );
 };
 

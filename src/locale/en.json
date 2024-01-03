@@ -20,5 +20,7 @@
     "Log out": "Log out",
     "Welcome to your account!": "Welcome to your account!",
     "companyGreeting": "Hello, {{firstName}}! Thank you for being part of our platform as a company.",
-    "studentGreeting": "Hello, {{firstName}}! We're excited to have you on board as a student."
+    "studentGreeting": "Hello, {{firstName}}! We're excited to have you on board as a student.",
+    "adminGreeting": "Hello ! to your website."
+
 }

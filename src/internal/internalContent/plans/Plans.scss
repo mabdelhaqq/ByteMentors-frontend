@@ -1,0 +1,39 @@
+.plans-page {
+    max-width: 800px;
+    margin: 20px auto;
+    .note {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      margin-top: 5px;
+      h5 {
+        font-style: italic;
+        font-weight: 450;
+        font-size: 16px;
+        text-shadow: 2px 2px 4px rgba(1, 0, 10, 0.5);
+      }
+    }
+    .plans-list {
+      margin-top: 20px;
+  
+      .plan-item {
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 10px;
+  
+        h3 {
+          margin-bottom: 5px;
+        }
+  
+        p {
+          margin: 5px 0;
+        }
+  
+        button {
+          margin-top: 10px;
+        }
+      }
+    }
+  }

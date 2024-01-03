@@ -1,0 +1,61 @@
+.op-page {
+    max-width: 800px;
+    margin: 20px auto;
+    .btn-div {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      .selected-opportunities-btn {
+        margin-bottom: 5px;
+      }  
+    }
+    .searchb {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 5px 15px;
+      background-color: white;
+      width: 100%;
+      border-radius: 15px;
+      margin-bottom: 5px;
+  
+      .input-search {
+        width: 100%;
+        border: none;
+        background-color: white;
+        padding: 5px 0;
+        outline: none;
+        font-size: 16px;
+      }
+  
+      .icon-search {
+        font-size: 25px;
+        color: gray;
+        margin-right: 10px;
+      }
+    }
+    .link-card {
+      text-decoration: none;
+      color: black;
+      .item-op {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        align-items: flex-start;
+        border: 1px solid #f0f0f0;
+        border-radius: 10px;
+        padding: 5px 10px;
+        .dl-opp {
+            p {
+                font-style: italic;
+            }
+        }
+        &:hover {
+            background-color: #f0f0f0;
+          }
+      }
+    }
+  
+  }

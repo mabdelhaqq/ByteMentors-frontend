@@ -20,5 +20,7 @@
     "Log out": "تسجيل الخروج",
     "Welcome to your account!": "أهلا بك في حسابك!",
     "companyGreeting": "مرحبًا، {{firstName}}! شكرًا لك على كونك جزءًا من منصتنا كشركة.",
-    "studentGreeting": "مرحبًا، {{firstName}}! نحن متحمسون لاستضافتك كطالب في منصتنا."
+    "studentGreeting": "مرحبًا، {{firstName}}! نحن متحمسون لاستضافتك كطالب في منصتنا.",
+    "adminGreeting": "مرحبًا ! بك في الموقع الخاص بك."
+
 }

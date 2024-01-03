@@ -1,0 +1,46 @@
+.add-plan-page {
+    max-width: 800px;
+    margin: 10% auto;
+  
+    form {
+      display: flex;
+      flex-direction: column;
+  
+      .btns {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 15px;
+      }
+  
+      select, input, textarea {
+        margin-bottom: 15px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+  
+      textarea {
+        resize: vertical;
+      }
+  
+      button {
+        padding: 10px;
+        cursor: pointer;
+        width: 40%;
+      }
+  
+      button:first-child {
+        background-color: #28a745;
+      }
+  
+      button:last-child {
+        background-color: #dc3545;
+      }
+  
+      .error-message {
+        color: red;
+        text-align: center;
+        margin-top: 10px;
+      }
+    }
+  }

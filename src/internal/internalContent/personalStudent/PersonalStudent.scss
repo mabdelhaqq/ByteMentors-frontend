@@ -1,0 +1,131 @@
+.personal-student-page {
+    margin: 0 auto;
+    max-width: 800px;
+    .img-edit {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+          img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+          }
+          .btn-edit {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            .edit-profile-button {
+                margin-top: 5px;
+                width: 150px;
+              }
+          }
+      }
+    .name-cv {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 20px 5px 20px;
+        .cv-download {
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+          align-items: center;
+          justify-content: flex-start;
+          Button {
+            background-color: gray;
+            border: none;
+            color: black;
+            width: 150px;
+            &:hover {
+              background-color: #ccc;
+            }
+          }
+        }
+      }
+    .location-phone {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 20px 0 20px;
+      border-top: 1px solid #ccc;
+    }
+    .email-gender {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+    }
+    .linkedin-github {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      a {
+        text-decoration: none;
+        font-weight: 500;
+      }
+    }
+    .graduation {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 0 20px 0 20px;
+      p {
+        font-weight: 500;
+      }
+    }
+    
+    .bio {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 20px 0 20px;
+      border-top: 1px solid #ccc;
+      p {
+        font-style: italic;
+        font-weight: bold;
+      }
+    }
+    .preferred-fields {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+    }
+  
+    .skills {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      align-items: flex-start;
+      padding: 5px 20px;
+      border-top: 1px solid #ccc;
+      p {
+        margin-bottom: 5px;
+      }
+      ul {
+        list-style-type: disc;
+        margin-left: 20px;
+        li {
+          margin-bottom: 2px;
+        }
+      }
+    }
+  }

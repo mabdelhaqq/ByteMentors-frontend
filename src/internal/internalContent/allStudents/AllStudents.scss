@@ -1,0 +1,93 @@
+.all-students-page {
+  max-width: 800px;
+  margin: 20px auto;
+
+  .searchb {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px 15px;
+    background-color: white;
+    width: 100%;
+    border-radius: 15px;
+    margin-bottom: 5px;
+
+    .input-search {
+      width: 100%;
+      border: none;
+      background-color: white;
+      padding: 5px 0;
+      outline: none;
+      font-size: 16px;
+    }
+
+    .icon-search {
+      font-size: 25px;
+      color: gray;
+      margin-right: 10px;
+    }
+  }
+
+  .student-card {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    border: 1px solid #cec5c5;
+    margin-bottom: 20px;
+    cursor: pointer;
+    padding: 4px 10px;
+    border-radius: 10px;
+
+    &:hover {
+      background-color: #f0f0f0;
+    }
+
+    .img-stu {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+      }
+    }
+    .name-stu {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      h6 {
+        font-weight: bold;
+      }
+    }
+    .delete-btn {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      Button {
+        width: 200px;
+      }
+    }
+  }
+
+  h2 {
+    text-align: center;
+    font-style: italic;
+    margin-top: 25%;
+  }
+}
+.p-confirm-dialog {
+  width: 400px;
+  height: 150px;
+  .p-confirm-dialog-message {
+    font-weight: bold;
+  }
+  .p-button {
+    margin: 5px;
+    width: 80px;
+    height: 30px;
+  }
+}

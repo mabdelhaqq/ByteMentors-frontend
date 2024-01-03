@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Form, InputGroup, Card, Container, Row, Col } from 'react-bootstrap';
+import { Card, Container, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
 import Spinner from '../../../assets/spinner/Spinner';
 import './Companies.scss';
 import { Link } from 'react-router-dom';
+import user from "../../../assets/images/user.png";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
+
 
 const Companies = () => {
   const [companies, setCompanies] = useState([]);
@@ -25,28 +29,21 @@ const Companies = () => {
     }
   };
 
-  const handleSearchChange = (e) => {
-    setSearchTerm(e.target.value);
-  };
-
   const filteredCompanies = companies.filter((company) =>
     company.companyName && company.companyName.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
-    <>
-      <h1>Companies</h1>
-      <Form.Group controlId="formSearch">
-        <Form.Label>Search for a company:</Form.Label>
-        <InputGroup>
-          <Form.Control
-            type="text"
-            placeholder="Enter company name"
-            value={searchTerm}
-            onChange={handleSearchChange}
-          />
-        </InputGroup>
-      </Form.Group>
+    <Container className='cmp-page'>
+      <div className="searchb">
+            <FontAwesomeIcon icon={faSearch} className="icon-search" />
+            <input
+              placeholder="Search"
+              className="input-search"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
 
       {loading ? (
         <Spinner />
@@ -54,13 +51,13 @@ const Companies = () => {
         <Container>
           <Row>
             {filteredCompanies.map((company) => (
-              <Col key={company._id} md={4} className="mb-4">
-                <Link to={`/company/${company._id}`}>
+              <Col key={company._id} className="col-6 col-md-4 col-xl-3 mb-1">
+                <Link to={`/home/personalcompanyn/${company._id}`} className='link-card'>
                 <Card>
-                  <Card.Img variant="top" src={company.profileImage || 'default-image-url.jpg'} />
+                  <Card.Img className='img-card' variant="top" src={company.profileImage || user} />
                   <Card.Body>
-                    <Card.Title>{company.companyName}</Card.Title>
-                    <Card.Text>{company.city}</Card.Text>
+                    <Card.Title className='title-card'>{company.companyName}</Card.Title>
+                    <Card.Text className='city-card'>{company.city}</Card.Text>
                   </Card.Body>
                 </Card>
                 </Link>
@@ -69,7 +66,7 @@ const Companies = () => {
           </Row>
         </Container>
       )}
-    </>
+    </Container>
   );
 };
 

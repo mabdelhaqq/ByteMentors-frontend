@@ -1,0 +1,94 @@
+.response-page {
+    max-width: 800px;
+    margin: 20px auto;
+    .no-applicants {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      margin-top: 25%;
+
+      h2 {
+        font-weight: bold;
+        color: gray;
+      }
+      p {
+        font-weight: bold;
+        font-style: italic;
+        color: gray;
+      }
+    }
+    .accepted {
+      padding: 5px;
+      border: 1px solid gray;
+      margin-bottom: 2px;
+      h2 {
+        font-weight: bold;
+      }
+    }
+    .rejected {
+      padding: 5px;
+      border: 1px solid gray;
+      margin-bottom: 2px;
+      h2 {
+        font-weight: bold;
+      }
+    }
+    .pending {
+      padding: 5px;
+      border: 1px solid gray;
+      margin-bottom: 2px;
+      h2 {
+        font-weight: bold;
+      }
+    }
+    .applicant-box {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      align-items: center;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      padding: 5px 5px;
+      margin-bottom: 2px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #f6f6f6;
+      }
+      .applicant-image {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        img {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+        }
+      }
+      .applicant-info {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        h6 {
+          font-weight: bold;
+        }
+      }
+      .applicant-actions {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        Button {
+          border-radius: 5px;
+          margin-right: 5px;
+          width: 200px;
+        }
+        .rejected-btn {
+          opacity: 0.5;
+          cursor: no-drop;
+        }
+      }
+
+    }
+  }

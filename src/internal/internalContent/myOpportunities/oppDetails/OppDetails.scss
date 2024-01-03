@@ -1,0 +1,37 @@
+.opp-details-page {
+    max-width: 800px;
+    margin: 20px auto;
+  
+    .button-group {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+  
+      button {
+        flex: 1;
+      }
+    }
+  
+    .opportunity-info {
+      margin-top: 20px;
+      border: 1px solid #ccc;
+        border-radius: 10px;  // تحديد حافة منحنية
+        padding: 10px; 
+  
+      p {
+        margin-bottom: 10px;
+        font-size: 20px;
+        span {
+          color: blue;
+          cursor: pointer;
+        }
+     // إضافة حشو للمحتوى
+      }
+    }
+  
+    button {
+      width: 100%;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+}

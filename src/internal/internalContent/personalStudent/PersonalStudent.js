@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Container, Row, Col, Button, Form } from 'react-bootstrap';
 import { useEmail } from '../../../helpers/EmailContext';
-// import { MultiSelect } from 'react-multi-select-component';
 import cities from '../../../helpers/cities';
 import axios from 'axios';
+import MultiSelect from "multiselect-react-dropdown";
+import "./PersonalStudent.scss"
 
 const PersonalStudent = () => {
   const {
@@ -13,33 +14,36 @@ const PersonalStudent = () => {
     phoneNumber,
     description,
     linkedin,
+    profileImage,
+    _id,
     github,
     gender,
-    profileImage,
     graduate,
     university,
     graduationYear,
-    // preferredField,
-    // skills,
+    preferredField,
+    skills,
+    cv,
     setLoggedInEmail,
   } = useEmail();
 
   const [editMode, setEditMode] = useState(false);
-  // const [selectedSkills, setSelectedSkills] = useState([]);
+  const [optione, setOptione] = useState(["HTML5", "CSS3", "JavaScript", "BootStrap5", "SASS"]);
   const [editedInfo, setEditedInfo] = useState({
     name: username,
     city,
     phoneNumber,
+    bio: description,
+    linkedin,
+    profileImage,
+    github,
+    gender,
     graduate,
     university,
     graduationYear,
-    bio: description,
-    linkedin,
-    github,
-    gender,
-    // preferredField,
-    // skills,
-    profileImage,
+    preferredField,
+    skills,
+    cv,
   });
 
   const handleEditClick = () => {
@@ -57,23 +61,20 @@ const PersonalStudent = () => {
       profileImage,
       github,
       gender,
-      university,
       graduate, 
+      university,
       graduationYear,
+      preferredField,
+      skills,
+      cv,
     });
   };
+
   const handleSaveClick = async () => {
     try {
-        // const editedGraduationYear = typeof editedInfo.graduationYear === 'string'
-        // ? parseInt(editedInfo.graduationYear)
-        // : editedInfo.graduationYear;
-        // const editedGraduate = editedInfo.graduate === "true";
       const response = await axios.post('http://localhost:3001/updateStudentInfo', {
         email: email,
         ...editedInfo,
-        // graduationYear: editedGraduationYear,
-        // graduate: editedGraduate, // استخدام القيمة المحولة
-        // skills: selectedSkills.map((skill) => skill.label),
       });
   
       if (response.data.success) {
@@ -86,13 +87,15 @@ const PersonalStudent = () => {
           editedInfo.bio,
           editedInfo.linkedin,
           editedInfo.profileImage,
+          _id,
           editedInfo.github,
+          editedInfo.gender,
+          editedInfo.graduate,
           editedInfo.university,
           editedInfo.graduationYear,
-          editedInfo.graduate,
-          editedInfo.gender,
-        //   editedInfo.preferredField || [],
-        //   editedInfo.skills || [],  // تحقق من وجود القيمة قبل استخدامها
+          editedInfo.preferredField,
+          editedInfo.skills,
+          editedInfo.cv,
         );
       } else {
         console.error('Failed to update student info');
@@ -101,18 +104,6 @@ const PersonalStudent = () => {
       console.error('Error updating student info', error);
     }
   };
-  
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setEditedInfo((prevInfo) => ({
-      ...prevInfo,
-      [name]: value,
-    }));
-  };
-
-  // const handleSkillsChange = (selected) => {
-  //   setSelectedSkills(selected);
-  // };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -131,99 +122,158 @@ const PersonalStudent = () => {
     }
   };
 
-  useEffect(() => {
-    setEditedInfo({
-      name: username,
-      city,
-      phoneNumber,
-      graduate,
-      university,
-      graduationYear,
-      bio: description,
-      linkedin,
-      github,
-      gender,
-    //   preferredField,
-    //   skills,
-      profileImage,
-    });
-
-    // setSelectedSkills(
-    //   skills.map((skill) => ({ label: skill, value: skill }))
-    // );
-  }, [email, username, city, phoneNumber, description, linkedin, github, gender, graduate, university, graduationYear, profileImage]);
-
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setEditedInfo((prevInfo) => ({
+      ...prevInfo,
+      [name]: value,
+    }));
+  };
+  const handleCVUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setEditedInfo((prevInfo) => ({
+          ...prevInfo,
+          cv: reader.result,
+        }));
+      };
+      reader.onerror = (error) => {
+        console.error('Error reading file:', error);
+      };
+  
+      reader.readAsDataURL(file);
+    }
+  };
+  const downloadCV = () => {
+    const link = document.createElement('a');
+    link.href = editedInfo.cv;
+    link.download = "CV.pdf";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+  const handleSkillsChange = (selectedList, selectedItem) => {
+    setEditedInfo(prevInfo => ({
+      ...prevInfo,
+      skills: selectedList
+    }));
+  };
+  const handleAddSkill = (skill) => {
+    setOptione([...optione, skill]);
+    setEditedInfo(prevInfo => ({
+      ...prevInfo,
+      skills: [...prevInfo.skills, skill]
+    }));
+  };
+  
+  
   return (
     <Container className="personal-student-page">
       <Row>
-        <Col md={12}>
+      <Col md={12}>
           <div className="info-section">
             {!editMode && (
               <>
-                <Button
-                  variant="info"
-                  onClick={handleEditClick}
-                  className="edit-profile-button"
-                >
-                  Edit Profile
-                </Button>
-                {profileImage && (
-                  <div className="profile-image-preview-container">
-                    <img
+                <Col md={12} className='img-edit'>
+                  <div className="image col-6">
+                    {editedInfo.profileImage && (
+                      <img
                       src={editedInfo.profileImage}
-                      alt="Profile Preview"
+                      alt="Profile"
                       className="profile-image-preview"
-                    />
+                      />
+                    )}
+                    {editedInfo.cv && (
+                    <Button variant="link" onClick={downloadCV}>
+                      Download CV
+                    </Button>
+                  )}
                   </div>
-                )}
-                <h2>{editedInfo.name}</h2>
-                <p>Email: {email}</p>
-                <p>Location: {editedInfo.city}</p>
-                <p>Phone Number: {editedInfo.phoneNumber}</p>
-                {editedInfo.linkedin && (
-                  <div className="sub-info">
-                    <p>LinkedIn: </p>
-                    <a
-                      href={editedInfo.linkedin}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                  <div className='btn-edit col-6'>
+                    <Button
+                    onClick={handleEditClick}
+                    className="edit-profile-button"
                     >
-                      {editedInfo.linkedin}
-                    </a>
+                      Edit Profile
+                    </Button>
+                    </div>
+                </Col>
+                <Col md={12} className='name-cv'>
+                <div className="name col-6">
+                  <h2>{editedInfo.name}</h2>
+                </div>
+              </Col>
+              {editedInfo.bio && (
+              <Col md={12}>
+                <div className="bio">
+                  <p>{editedInfo.bio}</p>
+                </div>
+              </Col>
+              )}
+              {editedInfo.preferredField && (
+              <Col md={12}>
+              <div className="preferred-fields col-12">
+                <h6>Preferred Failed: {editedInfo.preferredField}</h6>
+              </div>
+              </Col>
+              )}
+              <Col md={12}>
+              {editedInfo.graduate ? (
+                <div className="graduation">
+                  <p>{`Graduated from ${editedInfo.university} in ${editedInfo.graduationYear}`}</p>
+                </div>
+              ):(<div className='graduation'><p>Not graduated yet</p></div>)}
+              </Col>
+              <Col md={12}>
+                <div className="location-phone">
+                  <div className="location col-6">
+                    <p><b>Location: </b>{editedInfo.city}</p>
+                  </div>
+                  <div className="phone col-6">
+                    <p><b>Phone Number: </b>{editedInfo.phoneNumber}</p>
+                  </div>
+                </div>
+              </Col>
+              <Col md={12}>
+                <div className="email-gender">
+                  <div className="email col-6">
+                    <p><b>Email: </b>{email}</p>
+                  </div>
+                    <div className="gender col-6">
+                      <p><b>Gender: </b>{editedInfo.gender}</p>
+                    </div>
+                </div>
+              </Col>
+              {((editedInfo.linkedin) || (editedInfo.github)) &&(
+                <Col md={12}>
+                  <div className='linkedin-github'>
+                {editedInfo.linkedin && (
+                  <div className="linkedin col-6">
+                    <p><b>Linkedin: </b><a href={editedInfo.linkedin} target="_blank" rel="noopener noreferrer">{editedInfo.linkedin}</a></p>
                   </div>
                 )}
                 {editedInfo.github && (
-                  <div className="sub-info">
-                    <p>Github: </p>
-                    <a
-                      href={editedInfo.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {editedInfo.github}
-                    </a>
+                  <div className="github col-6">
+                    <p><b>Github: </b><a href={editedInfo.github} target="_blank" rel="noopener noreferrer">{editedInfo.github}</a></p>
                   </div>
                 )}
-                {editedInfo.gender && <p>Gender: {editedInfo.gender}</p>}
-                {editedInfo.graduate === 'true'? (<p>Graduate: Yes</p>):(<p>Graduate: No</p>)}
-                {editedInfo.university && (
-                  <p>University: {editedInfo.university}</p>
-                )}
-                {editedInfo.graduationYear && (
-                  <p>Graduation Year: {editedInfo.graduationYear}</p>
-                )}
-                {/* {editedInfo.preferredField && (
-                  <p>Preferred Field: {editedInfo.preferredField.join(', ')}</p>
-                )}
-                {editedInfo.skills && (
-                  <p>Skills: {editedInfo.skills.join(', ')}</p>
-                )} */}
-                {editedInfo.bio && (
-                  <>
-                    <hr />
-                    <p>{editedInfo.bio}</p>
-                  </>
-                )}
+                </div>
+                </Col>
+              )}
+              {editedInfo.skills.length > 0 && (
+                <Col md={12}>
+                  <div className="skills">
+                    <p><b>Skills: </b></p>
+                    <ul>
+                      {editedInfo.skills.map((skill, index) => (
+                        <li key={index}>{skill}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </Col>
+              )}
               </>
             )}
           </div>
@@ -244,6 +294,7 @@ const PersonalStudent = () => {
                   />
                 )}
               </Form.Group>
+
               <Form.Group controlId="formName">
                 <Form.Label>Name</Form.Label>
                 <Form.Control
@@ -254,6 +305,7 @@ const PersonalStudent = () => {
                   onChange={handleInputChange}
                 />
               </Form.Group>
+
               <Form.Group controlId="formCity">
                 <Form.Label>City</Form.Label>
                 <Form.Control
@@ -270,6 +322,7 @@ const PersonalStudent = () => {
                   ))}
                 </Form.Control>
               </Form.Group>
+
               <Form.Group controlId="formPhoneNumber">
                 <Form.Label>Phone Number</Form.Label>
                 <Form.Control
@@ -280,6 +333,7 @@ const PersonalStudent = () => {
                   onChange={handleInputChange}
                 />
               </Form.Group>
+
               <Form.Group controlId="formBio">
                 <Form.Label>Bio</Form.Label>
                 <Form.Control
@@ -290,6 +344,7 @@ const PersonalStudent = () => {
                   onChange={handleInputChange}
                 />
               </Form.Group>
+
               <Form.Group controlId="formLinkedin">
                 <Form.Label>LinkedIn</Form.Label>
                 <Form.Control
@@ -300,7 +355,46 @@ const PersonalStudent = () => {
                   onChange={handleInputChange}
                 />
               </Form.Group>
-              <Form.Group controlId="formLinkedin">
+
+              <div className="form-group checkbox-group">
+                <label>
+                  <input
+                    type="checkbox"
+                    name="graduate"
+                    checked={Boolean(editedInfo.graduate)}
+                    onChange={(e) => handleInputChange({ target: { name: "graduate", value: e.target.checked } })}
+                  />
+                  Graduated
+                </label>
+              </div>
+
+              {editedInfo.graduate && (
+                <>
+                  <Form.Group controlId="formUniversity">
+                    <Form.Label>University</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Enter your university"
+                      name="university"
+                      value={editedInfo.university || ''}
+                      onChange={handleInputChange}
+                    />
+                  </Form.Group>
+
+                  <Form.Group controlId="formGraduationYear">
+                    <Form.Label>Graduation Year</Form.Label>
+                    <Form.Control
+                      type="number"
+                      placeholder="Enter graduation year"
+                      name="graduationYear"
+                      value={editedInfo.graduationYear || ''}
+                      onChange={handleInputChange}
+                    />
+                  </Form.Group>
+                </>
+              )}
+
+              <Form.Group controlId="formGithub">
                 <Form.Label>Github</Form.Label>
                 <Form.Control
                   type="text"
@@ -310,83 +404,46 @@ const PersonalStudent = () => {
                   onChange={handleInputChange}
                 />
               </Form.Group>
+
               <Form.Group controlId="formGender">
                 <Form.Label>Gender</Form.Label>
                 <Form.Control
-                    as="select"
-                    name="gender"
-                    value={editedInfo.gender || ''}
-                    onChange={handleInputChange}
+                  as="select"
+                  name="gender"
+                  value={editedInfo.gender || ''}
+                  onChange={handleInputChange}
                 >
-                    <option value="">Select Gender</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
+                  <option value="">Select Gender</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
                 </Form.Control>
-                </Form.Group>
-                <Form.Group controlId="formGraduate">
-                <Form.Label>Graduate</Form.Label>
-                <Form.Control
-                    as="select"
-                    name="graduate"
-                    value={editedInfo.graduate ? 'true' : 'false'}
-                    onChange={handleInputChange}
-                    >
-                    <option value="">Select</option>
-                    <option value="true">Yes</option>
-                    <option value="false">No</option>
-                    </Form.Control>
-                </Form.Group>
-              <Form.Group controlId="formUniversity">
-                <Form.Label>University</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Enter your university"
-                  name="university"
-                  value={editedInfo.university || ''}
-                  onChange={handleInputChange}
-                />
               </Form.Group>
-              <Form.Group controlId="formGraduationYear">
-                <Form.Label>Graduation Year</Form.Label>
-                <Form.Control
-                  type="number"
-                  placeholder="Enter graduation year"
-                  name="graduationYear"
-                  value={editedInfo.graduationYear || ''}
-                  onChange={handleInputChange}
-                />
-              </Form.Group>
-              {/* <Form.Group controlId="formPreferredField">
-                <Form.Label>Preferred Field</Form.Label>
-                <MultiSelect
-                  options={[
-                    { label: 'Front End', value: 'front end' },
-                    { label: 'Back End', value: 'back end' },
-                    // ... إضافة خيارات أخرى
-                  ]}
-                  value={editedInfo.preferredField}
-                  onChange={(selected) =>
-                    setEditedInfo((prevInfo) => ({
-                      ...prevInfo,
-                      preferredField: selected.map((field) => field.label),
-                    }))
+
+              <Form.Group controlId="formSkills">
+              <Form.Label>Skills</Form.Label>
+              <MultiSelect
+                isObject={false}
+                onSelect={handleSkillsChange}
+                onRemove={handleSkillsChange}
+                onSearch={(value) => {
+                  if (value && !optione.includes(value)) {
+                    handleAddSkill(value);
                   }
-                  labelledBy={"Select"}
+                }}
+                isCreatable={true}
+                options={optione}
+                selectedValues={editedInfo.skills}
+              />
+            </Form.Group>
+              <Form.Group controlId="formCV">
+                <Form.Label>CV</Form.Label>
+                <Form.Control
+                  type="file"
+                  accept=".pdf"
+                  onChange={handleCVUpload}
                 />
-              </Form.Group> */}
-              {/* <Form.Group controlId="formSkills">
-                <Form.Label>Skills</Form.Label>
-                <MultiSelect
-                  options={[
-                    { label: 'HTML5', value: 'HTML5' },
-                    { label: 'CSS3', value: 'CSS3' },
-                    // ... إضافة خيارات أخرى
-                  ]}
-                  value={selectedSkills}
-                  onChange={handleSkillsChange}
-                  labelledBy={"Select"}
-                />
-              </Form.Group> */}
+              </Form.Group>
+
               <Button variant="primary" onClick={handleSaveClick}>
                 Save
               </Button>

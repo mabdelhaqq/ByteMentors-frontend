@@ -1,0 +1,108 @@
+.all-opportunities-page {
+  max-width: 800px;
+  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
+
+  .addition {
+    width: 98%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+    margin-left: 10px;
+    margin-right: 10px;
+    .select {
+      width: 100%;
+      padding: 0;
+      .internal-select {
+        padding: 7px;
+      }
+    }
+    .search {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      background-color: white;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      padding: 2px;
+      width: 100%;
+      .search-icon {
+        color: gray;
+        font-size: 20px;
+      }
+      .in {
+        width: 100%;
+        border: none;
+        
+      }
+    }
+  
+  }
+
+.mainn {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+  .opportunity-card {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    border: 1px solid #cec5c5;
+    margin-bottom: 10px;
+    cursor: pointer;
+    padding: 4px 10px;
+    border-radius: 10px;
+
+    &:hover {
+      background-color: #f0f0f0;
+    }
+
+    .opportunity-details {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      .opportunity-field {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+      .opportunity-company{
+        font-size: 16px;
+        font-style: italic;
+      }
+    }
+  }
+  h2 {
+    text-align: center;
+    font-style: italic;
+    margin-top: 25%;
+  }
+}
+.p-confirm-dialog {
+  width: 400px;
+  height: 150px;
+  .p-confirm-dialog-message {
+    font-weight: bold;
+  }
+  .p-button {
+    margin: 5px;
+    width: 80px;
+    height: 30px;
+  }
+}
+}

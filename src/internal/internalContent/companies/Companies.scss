@@ -1,25 +1,45 @@
-// Companies.scss
+.cmp-page {
+  margin: 20px auto;
+  .searchb {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px 15px;
+    background-color: white;
+    width: 100%;
+    border-radius: 15px;
+    margin-bottom: 5px;
 
-.card {
-    transition: transform 0.3s; // تحديد الانتقال عند التحويل
-  
-    &:hover {
-      transform: scale(1.05); // تكبير البطاقة عند التحويل
-    }
-  
-    img {
+    .input-search {
       width: 100%;
-      height: 200px; // تحديد ارتفاع الصورة
-      object-fit: cover; // تكبير/تصغير الصورة لتناسب الحاوية دون تشويه
+      border: none;
+      background-color: white;
+      padding: 5px 0;
+      outline: none;
+      font-size: 16px; // حجم الخط لمربع البحث
+    }
+
+    .icon-search {
+      font-size: 25px;
+      color: gray;
+      margin-right: 10px; // هامش الأيقونة عند اليمين
     }
   }
-  
-  .container {
-    margin-top: 20px;
-  
-    .row {
-      display: flex;
-      justify-content: space-between;
+  .link-card {
+    text-decoration: none;
+    color: black;
+    .img-card {
+      width: 100%
+    }
+    .title-card {
+      font-weight: bolder;
+    }
+    .city-card {
+      font-style: italic
+    }
+    &:hover {
+      opacity: 0.8;
     }
   }
-  
+
+}
