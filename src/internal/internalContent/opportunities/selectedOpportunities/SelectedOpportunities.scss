@@ -24,6 +24,10 @@
                 color: red;
                 font-size: 30px;
             }
+            .icon-waiting {
+                color: blue;
+                font-size: 30px;
+            }
             .icon-pending {
                 color: orange;
                 font-size: 30px;
@@ -40,6 +44,10 @@
 
             .status-pending {
                 color: orange;
+            }
+
+            .status-waiting {
+                color: blue;
             }
         }
     }

@@ -10,6 +10,7 @@ import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import fields from "../../../helpers/fields"
 
 
 const AllOpportunities = () => {
@@ -19,7 +20,7 @@ const AllOpportunities = () => {
   const [displayDialog, setDisplayDialog] = useState(false);
   const [opportunityIdToDelete, setOpportunityIdToDelete] = useState(null);
   const [filter, setFilter] = useState('');
-  const [searchTerm, setSearchTerm] = useState(''); // حالة جديدة للبحث
+  const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
 
   const fetchCompanyName = async (companyId) => {
@@ -92,11 +93,12 @@ const AllOpportunities = () => {
       ) : (
         <Container className="all-opportunities-page">
           <Row className='addition'>
-            <Col className='select col-12'>
+          <Col className='select col-12'>
               <Form.Select value={filter} onChange={(e) => setFilter(e.target.value)} className='internal-select'>
                 <option value="">All Fields</option>
-                <option value="Frontend">Front End</option>
-                <option value="Backend">Back End</option>
+                {fields.map((field, index) => (
+                  <option key={index} value={field}>{field}</option>
+                ))}
               </Form.Select>
             </Col>
             <Col className='search col-12'>

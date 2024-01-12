@@ -9,7 +9,7 @@ const Learn = () => {
       <div className="learning-resources">
         <h2>Learning Resources</h2>
         <p>
-          Byte Mentor's provides a diverse range of learning resources to help you enhance your skills
+          Byte Mentor provides a diverse range of learning resources to help you enhance your skills
           and stay updated with the latest trends in the world of technology. From tutorials and articles
           to video lectures, we've got you covered.
         </p>
@@ -27,8 +27,8 @@ const Learn = () => {
       <div className="using-the-platform">
         <h2>Using the Platform</h2>
         <p>
-          New to Byte Mentor's? Learn how to navigate the platform, create an account, and make the most of
-          your learning experience. Explore features and get tips on optimizing your time on Byte Mentor's.
+          New to Byte Mentor? Learn how to navigate the platform, create an account, and make the most of
+          your learning experience. Explore features and get tips on optimizing your time on Byte Mentor.
         </p>
       </div>
 
@@ -37,7 +37,7 @@ const Learn = () => {
         <p>
           Connect with like-minded learners, share your experiences, and collaborate on projects. Our
           community forums provide a space for networking, knowledge sharing, and mutual support among
-          Byte Mentor's users.
+          Byte Mentor users.
         </p>
       </div>
     </div>

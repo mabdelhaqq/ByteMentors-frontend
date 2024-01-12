@@ -14,9 +14,15 @@ const Header = () => {
     const [isDropDownLogin, setDropDownLogin] = useState(false);
     const toggleToolbar = () => {
         setDropDownToolbar(!isDropDownToolbar);
+        if(isDropDownLogin){
+            setDropDownLogin(!isDropDownLogin);
+        }
     };
     const toggleLogin = () => {
         setDropDownLogin(!isDropDownLogin);
+        if(isDropDownToolbar){
+            setDropDownToolbar(!isDropDownToolbar);
+        }
     };
   return (
     <header className='ex-header'>
@@ -30,7 +36,7 @@ const Header = () => {
             <FontAwesomeIcon icon={faGripLines} onClick={toggleToolbar}/>
             {isDropDownToolbar && (
                 <div className="dropdown-menutoolbar">
-                    <div className="dropdown-itemtoolbar" onClick={() => { navigate('/why');setDropDownToolbar(!isDropDownToolbar)}}>WhyByteMentors?</div>
+                    <div className="dropdown-itemtoolbar" onClick={() => { navigate('/why');setDropDownToolbar(!isDropDownToolbar)}}>WhyByteMentor?</div>
                     <div className="dropdown-itemtoolbar" onClick={() => { navigate('/about');setDropDownToolbar(!isDropDownToolbar)}}>About</div>
                     <div className="dropdown-itemtoolbar" onClick={() => { navigate('/learn');setDropDownToolbar(!isDropDownToolbar)}}>Learn</div>
                     <div className="dropdown-itemtoolbar" onClick={() => { navigate('/help');setDropDownToolbar(!isDropDownToolbar)}}>Help</div>

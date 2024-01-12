@@ -4,12 +4,12 @@ const Why = () => {
   return (
     <div className="why-container">
       <h1>Empowering Future Tech Leaders</h1>
-      <p>Byte Mentor's Mission</p>
+      <p>Byte Mentor Mission</p>
 
       <div className="project-description">
         <h2>Overview:</h2>
         <p>
-          Byte Mentor's is an innovative educational platform that provides guidance and recommendations for IT college students.
+          Byte Mentor is an innovative educational platform that provides guidance and recommendations for IT college students.
           The platform assists students in choosing their career and training paths in the fields of information technology and computer science.
           It offers comprehensive support and helps in finding optimal training opportunities in various computer and technology domains.
         </p>
@@ -36,7 +36,7 @@ const Why = () => {
       </div>
 
       <div className="user-types">
-        <h2>User Types</h2>
+        <h2>User Types:</h2>
         <ul>
           <li>- Current students</li>
           <li>- Graduates seeking training opportunities</li>

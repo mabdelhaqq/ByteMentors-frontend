@@ -4,9 +4,13 @@
     flex-wrap: nowrap;
     justify-content: center;
     align-items: center;
-    .link {
+    .item {
         text-decoration: none;
-        .item {
+        display: flex;
+        align-items: center;
+        padding-top: 15px;
+        .link {
+            text-decoration: none;
             margin: 0 7px;
             display: inline-block;
             color: black;

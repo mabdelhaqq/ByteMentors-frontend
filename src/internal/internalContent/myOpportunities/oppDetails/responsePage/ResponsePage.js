@@ -11,6 +11,7 @@ const ResponsePage = () => {
   const [pendingApplicants, setPendingApplicants] = useState([]);
   const [acceptedApplicants, setAcceptedApplicants] = useState([]);
   const [rejectedApplicants, setRejectedApplicants] = useState([]);
+  const [waitingApplicants, setWaitingApplicants] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [acceptDialogVisible, setAcceptDialogVisible] = useState(false);
   const [rejectDialogVisible, setRejectDialogVisible] = useState(false);
@@ -30,7 +31,7 @@ const ResponsePage = () => {
       try {
         const response = await axios.get(`http://localhost:3001/opportunity/${opportunityId}/applicants`);
         if (response.data.length > 0) {
-          const pending = [], accepted = [], rejected = [];
+          const pending = [], accepted = [], rejected = [], waiting = [];
           response.data.forEach(applicant => {
             switch (applicant.status) {
               case 'accepted':
@@ -39,6 +40,9 @@ const ResponsePage = () => {
               case 'rejected':
                 rejected.push(applicant);
                 break;
+              case 'waiting':
+                waiting.push(applicant);
+                break;
               default:
                 pending.push(applicant);
             }
@@ -46,6 +50,7 @@ const ResponsePage = () => {
           setPendingApplicants(pending);
           setAcceptedApplicants(accepted);
           setRejectedApplicants(rejected);
+          setWaitingApplicants(waiting);
         }
       } catch (error) {
         console.error('Error fetching applicants', error);
@@ -101,15 +106,6 @@ const ResponsePage = () => {
     setRejectDialogVisible(false);
   };
 
-  const openInterviewModal = (studentId) => {
-    setSelectedStudentId(studentId);
-    setShowInterviewModal(true);
-  };
-
-  const closeInterviewModal = () => {
-    setShowInterviewModal(false);
-  };
-
   const handleInterviewSubmit = async () => {
     if (!interviewType || !interviewDate || !interviewTime || (interviewType === 'online' && !interviewLink) || (interviewType === 'in-person' && !interviewAddress)) {
       alert("Please fill in all fields.");
@@ -124,24 +120,46 @@ const ResponsePage = () => {
         ...(interviewType === 'online' ? { interviewLink } : {}),
         ...(interviewType === 'in-person' ? { interviewAddress } : {}),
       };
-      await axios.post(`http://localhost:3001/opportunity/${opportunityId}/scheduleInterview/${selectedStudentId}`, interviewData);
-      closeInterviewModal();
+      const response = await axios.post(`http://localhost:3001/opportunity/${opportunityId}/scheduleInterview/${selectedStudentId}`, interviewData);
+      if (response.data.success) {
+        updateApplicantStatus('waiting', selectedStudentId);
+      }
+      setShowInterviewModal(false);
     } catch (error) {
       console.error('Error scheduling interview', error);
     }
   };
   const updateApplicantStatus = (newStatus, studentId) => {
     setPendingApplicants(prev => prev.filter(applicant => applicant._id !== studentId));
-    const updatedApplicant = [...pendingApplicants, ...acceptedApplicants, ...rejectedApplicants].find(applicant => applicant._id === studentId);
-    updatedApplicant.status = newStatus;
-
-    if (newStatus === 'accepted') {
-      setAcceptedApplicants(prev => [...prev, updatedApplicant]);
-    } else {
-      setRejectedApplicants(prev => [...prev, updatedApplicant]);
+    setAcceptedApplicants(prev => prev.filter(applicant => applicant._id !== studentId));
+    setRejectedApplicants(prev => prev.filter(applicant => applicant._id !== studentId));
+    setWaitingApplicants(prev => prev.filter(applicant => applicant._id !== studentId));
+  
+    const updatedApplicant = [...pendingApplicants, ...acceptedApplicants, ...rejectedApplicants, ...waitingApplicants].find(applicant => applicant._id === studentId);
+    if (updatedApplicant) {
+      updatedApplicant.status = newStatus;
+  
+      if (newStatus === 'accepted') {
+        setAcceptedApplicants(prev => [...prev, updatedApplicant]);
+      } else if (newStatus === 'waiting') {
+        setWaitingApplicants(prev => [...prev, updatedApplicant]);
+      } else if (newStatus === 'rejected') {
+        setRejectedApplicants(prev => [...prev, updatedApplicant]);
+      } else if (newStatus === 'pending') {
+        setPendingApplicants(prev => [...prev, updatedApplicant]);
+      }
     }
   };
+  
   const totalApplicants = pendingApplicants.length + acceptedApplicants.length + rejectedApplicants.length;
+  const openInterviewModal = (studentId) => {
+    setSelectedStudentId(studentId);
+    setShowInterviewModal(true);
+  };
+
+  const closeInterviewModal = () => {
+    setShowInterviewModal(false);
+  };
 
 
   return (
@@ -165,7 +183,6 @@ const ResponsePage = () => {
         reject={() => setAcceptDialogVisible(false)}
       />
 
-      {/* Interview Modal */}
       <Modal show={showInterviewModal} onHide={closeInterviewModal}>
         <Modal.Header closeButton>
           <Modal.Title>Schedule Interview</Modal.Title>
@@ -236,11 +253,22 @@ const ResponsePage = () => {
                   openInterviewModal={openInterviewModal} 
                 />
               )}
+                {waitingApplicants.length > 0 && (
+                <ApplicantSection 
+                  className="waiting" 
+                  title="Waiting for the interview"
+                  applicants={waitingApplicants}
+                  onClick={handleStudentClick}
+                  onAccept={handleAcceptClick} 
+                  onReject={handleRejectClick}
+                />
+              )}
               {pendingApplicants.length > 0 && (
                 <ApplicantSection 
                   className="pending" 
                   title="Pending Responses" 
                   applicants={pendingApplicants} 
+                  onClick={handleStudentClick}
                   onAccept={handleAcceptClick} 
                   onReject={handleRejectClick}
                   openInterviewModal={openInterviewModal}
@@ -268,14 +296,14 @@ const ApplicantSection = ({ title, applicants, onClick, onAccept, onReject, clas
     <h2>{title}</h2>
     {applicants.map(applicant => (
       <div key={applicant._id} className='applicant-box' onClick={() => onClick(applicant._id)}>
-        <div className="applicant-image col-2">
+        <div className="applicant-image col-1">
           <img src={applicant.profileImage || user} alt={applicant.name} />
         </div>
-        <div className="applicant-info col-5">
+        <div className="applicant-info col-4">
           <h6>{applicant.name}</h6>
         </div>
-        <div className="applicant-actions col-5">
-          {onAccept && onReject && (
+        <div className="applicant-actions col-7">
+          {applicant.status === 'waiting' ? (
             <>
               <Button variant="success" onClick={(event) => onAccept(event, applicant._id)}>
                 Accept
@@ -284,26 +312,35 @@ const ApplicantSection = ({ title, applicants, onClick, onAccept, onReject, clas
                 Reject
               </Button>
             </>
+          ) : (
+            <>
+              {onAccept && onReject && (
+                <>
+                  <Button variant="success" onClick={(event) => onAccept(event, applicant._id)}>
+                    Accept
+                  </Button>
+                  <Button variant="secondary" className="inter" onClick={(event) => {
+                    event.stopPropagation(); 
+                    openInterviewModal(applicant._id);
+                  }}>
+                    Schedule an interview
+                  </Button>
+                  <Button variant="danger" onClick={(event) => onReject(event, applicant._id)}>
+                    Reject
+                  </Button>
+                </>
+              )}
+            </>
           )}
           {applicant.status === 'rejected' && (
             <Button variant="danger" onClick={(event) => {event.stopPropagation()}} className='rejected-btn'>Rejected</Button>
           )}
           {applicant.status === 'accepted' && (
-            <Button 
-              variant="secondary" 
-              onClick={(event) => {
-                event.stopPropagation();
-                openInterviewModal(applicant._id);
-              }}
-              className='aceepted-btn'
-            >
-              Schedule an interview
-            </Button>
+            <Button variant="success" onClick={(event) => {event.stopPropagation()}} className='accepted-btn'>Accepted</Button>
           )}
         </div>
       </div>
     ))}
   </div>
 );
-
 export default ResponsePage;

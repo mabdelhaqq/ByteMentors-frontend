@@ -17,10 +17,26 @@
   
     .project-description,
     .project-goals,
-    .project-services,
-    .user-types {
+    .project-services {
       margin-bottom: 40px;
   
+      h2 {
+        font-size: 1.5em;
+        margin-bottom: 10px;
+      }
+  
+      ul {
+        list-style-type: none;
+        padding: 0;
+  
+        li {
+          font-size: 1.1em;
+          margin-bottom: 10px;
+          color: #555;
+        }
+      }
+    }
+    .user-types {
       h2 {
         font-size: 1.5em;
         margin-bottom: 10px;

@@ -4,10 +4,10 @@ import { Link } from 'react-router-dom'
 const Toolbar = () => {
   return (
     <nav className='ex-nav'>
-        <Link to='/why' className='link'><p className='item'>whyByteMentors?</p></Link>
-        <Link to='/about' className='link'><p className='item'>About</p></Link>
-        <Link to='/learn'className='link'><p className='item'>Learn</p></Link>
-        <Link to='/help' className='link'><p className='item'>Help</p></Link>
+        <p className='item'><Link to='/why' className='link'>whyByteMentor?</Link></p>
+        <p className='item'><Link to='/about' className='link'>About</Link></p>
+        <p className='item'><Link to='/learn' className='link'>Learn</Link></p>
+        <p className='item'><Link to='/help' className='link'>Help</Link></p>
     </nav>
   )
 }

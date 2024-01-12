@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useEmail } from '../../../../helpers/EmailContext';
 import './AddOp.scss';
+import fields from "../../../../helpers/fields";
 
 const AddOp = () => {
   const navigate = useNavigate();
@@ -62,10 +63,11 @@ const AddOp = () => {
         <Col md={{ span: 6, offset: 3 }}>
           <Form>
             <Form.Group controlId="formField">
-              <Form.Control as="select" onChange={handleFieldChange} value={field} required>
+            <Form.Control as="select" onChange={handleFieldChange} value={field} required>
                 <option value="">Select Field</option>
-                <option value="Frontend">Frontend</option>
-                <option value="Backend">Backend</option>
+                {fields.map((fieldOption, index) => (
+                  <option key={index} value={fieldOption}>{fieldOption}</option>
+                ))}
               </Form.Control>
             </Form.Group>
             <Form.Group controlId="formDeadline">

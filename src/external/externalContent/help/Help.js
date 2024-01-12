@@ -20,13 +20,10 @@ const Help = () => {
 
         <ul>
           <li>
-            <strong>Email:</strong> support@bytementors.com
+          <strong>ِAdmin email:</strong> <a href="mailto:mohamad4112002@gmail.com">mohamad4112002@gmail.com</a>
           </li>
           <li>
-            <strong>Phone:</strong> +970598077631
-          </li>
-          <li>
-            <strong>Live Chat:</strong> Available on the website during business hours.
+            <strong>Phone:</strong>+970598077631
           </li>
         </ul>
       </div>

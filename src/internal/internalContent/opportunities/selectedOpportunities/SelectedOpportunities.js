@@ -4,7 +4,7 @@ import Spinner from '../../../../assets/spinner/Spinner';
 import { useEmail } from '../../../../helpers/EmailContext';
 import "./SelectedOpportunities.scss";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleCheck, faBan, faHourglassHalf } from '@fortawesome/free-solid-svg-icons';
+import { faCircleCheck, faBan, faHourglassHalf, faClipboardQuestion } from '@fortawesome/free-solid-svg-icons';
 import { Modal, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { format } from 'date-fns';
@@ -35,12 +35,10 @@ const SelectedOpportunities = () => {
     } else if (opportunity.applicantStatus === 'rejected') {
       setShowRejectedDialog(true);
     } else if (opportunity.applicantStatus === 'accepted') {
-      if (opportunity.interviewDetails && opportunity.interviewDetails.type) {
-        setInterviewDetails(opportunity.interviewDetails);
-        setShowInterviewDetailsDialog(true);
-      } else {
-        setShowAcceptedDialog(true);
-      }
+      setShowAcceptedDialog(true);
+    } else if (opportunity.applicantStatus === 'waiting') {
+      setInterviewDetails(opportunity.interviewDetails);
+      setShowInterviewDetailsDialog(true);
     }
   };
   
@@ -67,7 +65,7 @@ const SelectedOpportunities = () => {
             })
           );
           sortedOpps.sort((a, b) => {
-            const statusOrder = { 'accepted': 1, 'pending': 2, 'rejected': 3 };
+            const statusOrder = { 'accepted': 1, 'waiting': 2, 'pending':3, 'rejected': 3 };
             return statusOrder[a.applicantStatus] - statusOrder[b.applicantStatus];
           });
   
@@ -87,6 +85,8 @@ const SelectedOpportunities = () => {
         return <FontAwesomeIcon icon={faCircleCheck} className="icon-accepted" />;
       case 'rejected':
         return <FontAwesomeIcon icon={faBan} className="icon-rejected" />;
+      case 'waiting':
+        return <FontAwesomeIcon icon={faClipboardQuestion} className="icon-waiting" />;
       case 'pending':
       default:
         return <FontAwesomeIcon icon={faHourglassHalf} className="icon-pending" />;
@@ -99,6 +99,8 @@ const SelectedOpportunities = () => {
         return 'status-accepted';
       case 'rejected':
         return 'status-rejected';
+        case 'waiting':
+          return 'status-waiting';
       case 'pending':
       default:
         return 'status-pending';
@@ -128,7 +130,8 @@ const SelectedOpportunities = () => {
             </div>
             <div className='information col-11'>
               <p><b>{opp.field}</b> Opportunity at <b>{opp.companyName}</b> Company</p>
-              <p className={getStatusClass(opp.applicantStatus)}><u>Status: {opp.applicantStatus}</u></p>
+              {opp.applicantStatus!=='waiting' && <p className={getStatusClass(opp.applicantStatus)}><u>Status: {opp.applicantStatus}</u></p>}
+              {opp.applicantStatus==='waiting' && <p className={getStatusClass(opp.applicantStatus)}><u>Status: Waiting for the interview</u></p>}
             </div>
           </div>
         ))
@@ -167,7 +170,7 @@ const SelectedOpportunities = () => {
           <Modal.Title>Accepted Request</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          Your application has been accepted by the company. The company will contact you soon or send you the interview details.
+        Congratulations, you have been accepted by the company advertising this training opportunity. The company will contact you soon for more details
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseAcceptedDialog}>

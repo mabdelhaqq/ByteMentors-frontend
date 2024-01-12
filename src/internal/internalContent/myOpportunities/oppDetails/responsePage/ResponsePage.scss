@@ -42,6 +42,14 @@
         font-weight: bold;
       }
     }
+    .waiting {
+      padding: 5px;
+      border: 1px solid gray;
+      margin-bottom: 2px;
+      h2 {
+        font-weight: bold;
+      }
+    }
     .applicant-box {
       display: flex;
       flex-direction: row;
@@ -82,9 +90,13 @@
         Button {
           border-radius: 5px;
           margin-right: 5px;
+          width: 100px;
+        }
+        .inter {
           width: 200px;
         }
-        .rejected-btn {
+        .rejected-btn, 
+        .accepted-btn {
           opacity: 0.5;
           cursor: no-drop;
         }
