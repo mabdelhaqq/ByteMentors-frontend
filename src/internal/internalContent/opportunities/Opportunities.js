@@ -32,13 +32,13 @@ const Opportunities = () => {
   const fetchOpportunities = async () => {
     setLoading(true);
     try {
-      const recommendedResponse = await axios.get(`http://localhost:5000/jobs/recommend?user_id=${_id}&num_recs=3`);
-      const processedRecommended = await processOpportunities(recommendedResponse.data.job_recommendations);
+      const recommendedResponse = await axios.get(`http://localhost:5000/opportunities/recommend?user_id=${_id}&num_recs=3`);
+      const processedRecommended = await processOpportunities(recommendedResponse.data.opportunity_recommendations);
       setRecommendedOpportunities(processedRecommended);
   
       const otherResponse = await axios.get('http://localhost:3001/opportunities');
       const filteredOther = otherResponse.data.filter(opportunity =>
-        !processedRecommended.some(recOpportunity => recOpportunity.job_info._id.$oid === opportunity._id)
+        !processedRecommended.some(recOpportunity => recOpportunity.opportunity_info._id.$oid === opportunity._id)
       );  
       const processedOther = await processOpportunitiesO(filteredOther);
       setOtherOpportunities(processedOther);
@@ -52,8 +52,8 @@ const Opportunities = () => {
 
   const processOpportunities = async (opportunities) => {
     return Promise.all(opportunities.map(async (opportunity) => {
-      const companyName = await fetchCompanyName(opportunity.job_info.companyId.$oid);
-      const companyLocation = await fetchCompanyLocation(opportunity.job_info.companyId.$oid);
+      const companyName = await fetchCompanyName(opportunity.opportunity_info.companyId.$oid);
+      const companyLocation = await fetchCompanyLocation(opportunity.opportunity_info.companyId.$oid);
       return { ...opportunity, companyName, companyLocation };
     }));
   };
@@ -88,16 +88,16 @@ const Opportunities = () => {
 
   const filteredAndSortedOpportunities = recommendedOpportunities
     .filter(opportunity =>
-      (!selectedField || (opportunity.job_info.field && opportunity.job_info.field.toLowerCase().includes(selectedField.toLowerCase()))) &&
+      (!selectedField || (opportunity.opportunity_info.field && opportunity.opportunity_info.field.toLowerCase().includes(selectedField.toLowerCase()))) &&
       (!selectedCity || (opportunity.companyLocation && opportunity.companyLocation.toLowerCase() === selectedCity.toLowerCase())) &&
       (opportunity.companyName.toLowerCase().includes(searchTerm.toLowerCase()) ||
         (opportunity.field && opportunity.field.toLowerCase().includes(searchTerm.toLowerCase())))
     )
     .sort((a, b) => {
       if (sortBy === 'newest') {
-        return new Date(b.job_info.deadline.$date) - new Date(a.job_info.deadline.$date);
+        return new Date(b.opportunity_info.deadline.$date) - new Date(a.opportunity_info.deadline.$date);
       } else {
-        return new Date(a.job_info.deadline.$date) - new Date(b.job_info.deadline.$date);
+        return new Date(a.opportunity_info.deadline.$date) - new Date(b.opportunity_info.deadline.$date);
       }
     });
 
@@ -183,12 +183,12 @@ const Opportunities = () => {
               <div className="recommended-title">
                 <h2>{t('opportunity.opportunitiesYouMayLike')}</h2>
                 {filteredAndSortedOpportunities.map((opportunity) => (
-                  <div key={opportunity.job_info._id.$oid} className="col-12 mb-1">
-                    <Link to={`/home/myopp/${opportunity.job_info._id.$oid}`} className={`link-card ${themeMode}`}>
+                  <div key={opportunity.opportunity_info._id.$oid} className="col-12 mb-1">
+                    <Link to={`/home/myopp/${opportunity.opportunity_info._id.$oid}`} className={`link-card ${themeMode}`}>
                       <div className='item-op'>
                         <div className='sh'>
-                          <div className='field-opp'><p>{t('opportunity.fieldLabel')}: <b>{opportunity.job_info.field}</b> at <b>{opportunity.companyName} company</b></p></div>
-                          <div className='dl-opp'><p>Available until: <b>{format(new Date(opportunity.job_info.deadline.$date), 'yyyy-MM-dd')}</b></p></div>
+                          <div className='field-opp'><p>{t('opportunity.fieldLabel')}: <b>{opportunity.opportunity_info.field}</b> at <b>{opportunity.companyName} company</b></p></div>
+                          <div className='dl-opp'><p>Available until: <b>{format(new Date(opportunity.opportunity_info.deadline.$date), 'yyyy-MM-dd')}</b></p></div>
                         </div>
                         <div className='dl-reco'><p><b>{t('opportunity.recommendedForYou')}</b></p></div>
                       </div>
