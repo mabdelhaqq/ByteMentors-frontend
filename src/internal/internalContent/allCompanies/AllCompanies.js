@@ -10,7 +10,8 @@ import { ConfirmDialog } from 'primereact/confirmdialog';
 import 'primereact/resources/themes/saga-blue/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
-import user from "../../../assets/images/user.png"
+import user from "../../../assets/images/user.png";
+import { useTranslation } from 'react-i18next';
 
 const AllCompanies = () => {
   const [companies, setCompanies] = useState([]);
@@ -20,21 +21,21 @@ const AllCompanies = () => {
   const [displayDialog, setDisplayDialog] = useState(false);
   const [companyIdToDelete, setCompanyIdToDelete] = useState(null);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   useEffect(() => {
+    const fetchCompanies = async () => {
+      try {
+        const response = await axios.get('http://localhost:3001/companies');
+        setCompanies(response.data);
+      } catch (error) {
+        console.error('Error fetching companies:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
     fetchCompanies();
   }, []);
-
-  const fetchCompanies = async () => {
-    try {
-      const response = await axios.get('http://localhost:3001/companies');
-      setCompanies(response.data);
-    } catch (error) {
-      console.error('Error fetching companies:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleCompanyClick = (companyId) => {
     navigate(`/home/personalcompanyn/${companyId}`);
@@ -48,7 +49,6 @@ const AllCompanies = () => {
   const handleDeleteClick = async () => {
     setDisplayDialog(false);
     setDeletingCompany(companyIdToDelete);
-
     try {
       const response = await axios.delete(`http://localhost:3001/company/${companyIdToDelete}`);
       if (response.data.success) {
@@ -73,10 +73,10 @@ const AllCompanies = () => {
         <Spinner />
       ) : (
         <Container className="all-companies-page">
-          <div className="searchb">
+          <div className="searchb dr">
             <FontAwesomeIcon icon={faSearch} className="icon-search" />
             <input
-              placeholder="Search"
+              placeholder={t('allCompanies.searchPlaceholder')}
               className="input-search"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -87,40 +87,39 @@ const AllCompanies = () => {
               filteredCompanies.map((company) => (
                 <Col md={12} key={company._id}>
                   <div className="company-card" onClick={() => handleCompanyClick(company._id)}>
-                  <div className='img-com col-2'>
+                    <div className='img-com col-2'>
                       <img src={company.profileImage || user} alt={company.companyName} />
                     </div>
                     <div className='name-com col-6'>
-                    <h6 className="company-name">{company.companyName}</h6>
+                      <h6 className="company-name">{company.companyName}</h6>
                     </div>
                     <div className='delete-btn col-4'>
-                    <Button
-                      variant="danger"
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        confirmDelete(company._id);
-                      }}
-                      className="btn-delete"
-                      disabled={deletingCompany === company._id}
-                    >
-                      {deletingCompany === company._id ? 'Deleting...' : 'Delete Account'}
-                    </Button>
+                      <Button
+                        variant="danger"
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          confirmDelete(company._id);
+                        }}
+                        className="btn-delete"
+                        disabled={deletingCompany === company._id}
+                      >
+                        {deletingCompany === company._id ? t('allCompanies.deleting') : t('allCompanies.deleteAccount')}
+                      </Button>
                     </div>
                   </div>
                 </Col>
               ))
             ) : (
-              <h2>There are no matching companies</h2>
+              <h2>{t('allCompanies.noMatchingCompanies')}</h2>
             )}
           </Row>
           <ConfirmDialog
             visible={displayDialog}
             onHide={() => setDisplayDialog(false)}
-            message="Are you sure you want to delete this account?"
-            header="Confirmation"
-            icon="pi pi-exclamation-triangle"
-            acceptLabel="Yes"
-            rejectLabel="No"
+            message={t('allCompanies.confirmMessage')}
+            header={t('allCompanies.confirmHeader')}
+            acceptLabel={t('allCompanies.yes')}
+            rejectLabel={t('allCompanies.no')}
             acceptClassName="p-button-danger"
             accept={handleDeleteClick}
           />

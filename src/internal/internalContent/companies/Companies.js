@@ -7,12 +7,13 @@ import { Link } from 'react-router-dom';
 import user from "../../../assets/images/user.png";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
-
+import { useTranslation } from 'react-i18next';
 
 const Companies = () => {
   const [companies, setCompanies] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
+  const { t } = useTranslation();
 
   useEffect(() => {
     fetchCompanies();
@@ -35,15 +36,15 @@ const Companies = () => {
 
   return (
     <Container className='cmp-page'>
-      <div className="searchb">
-            <FontAwesomeIcon icon={faSearch} className="icon-search" />
-            <input
-              placeholder="Search"
-              className="input-search"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
+      <div className="searchb dr">
+        <FontAwesomeIcon icon={faSearch} className="icon-search" />
+        <input
+          placeholder={t('companies.searchPlaceholder')}
+          className="input-search"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
 
       {loading ? (
         <Spinner />
@@ -53,13 +54,13 @@ const Companies = () => {
             {filteredCompanies.map((company) => (
               <Col key={company._id} className="col-6 col-md-4 col-xl-3 mb-1">
                 <Link to={`/home/personalcompanyn/${company._id}`} className='link-card'>
-                <Card>
-                  <Card.Img className='img-card' variant="top" src={company.profileImage || user} />
-                  <Card.Body>
-                    <Card.Title className='title-card'>{company.companyName}</Card.Title>
-                    <Card.Text className='city-card'>{company.city}</Card.Text>
-                  </Card.Body>
-                </Card>
+                  <Card>
+                    <Card.Img className='img-card' variant="top" src={company.profileImage || user} />
+                    <Card.Body className='dr'>
+                      <Card.Title className='title-card'>{company.companyName}</Card.Title>
+                      <Card.Text className='city-card'>{company.city}</Card.Text>
+                    </Card.Body>
+                  </Card>
                 </Link>
               </Col>
             ))}

@@ -5,10 +5,12 @@ import './ForgetCode.scss';
 const ForgetCode = ({ email, setStep }) => {
   const [code, setCode] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [verifying, setVerifying] = useState(false);
 
   const handleVerifyCode = async (e) => {
     e.preventDefault();
     try {
+      setVerifying(true);
       const response = await axios.post("http://localhost:3001/forgetcode/verify", { email, code });
       if (response.data.success) {
         setStep(3);
@@ -21,6 +23,8 @@ const ForgetCode = ({ email, setStep }) => {
       } else {
         setErrorMessage("An error occurred. Please try again.");
       }
+    } finally {
+      setVerifying(false);
     }
   };
 
@@ -36,8 +40,8 @@ const ForgetCode = ({ email, setStep }) => {
             value={code}
             onChange={(e) => setCode(e.target.value)}
           />
-          <button type="submit" onClick={handleVerifyCode}>
-            Verify Code
+          <button type="submit" onClick={handleVerifyCode} disabled={verifying}>
+            {verifying ? "Verifying..." : "Verify Code"}
           </button>
         </form>
         {errorMessage && <p className="error-message">{errorMessage}</p>}

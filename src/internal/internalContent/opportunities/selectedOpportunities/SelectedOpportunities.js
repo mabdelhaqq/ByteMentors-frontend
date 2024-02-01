@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Spinner from '../../../../assets/spinner/Spinner';
-import { useEmail } from '../../../../helpers/EmailContext';
 import "./SelectedOpportunities.scss";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleCheck, faBan, faHourglassHalf, faClipboardQuestion } from '@fortawesome/free-solid-svg-icons';
@@ -9,19 +8,19 @@ import { Modal, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { format } from 'date-fns';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 
 const SelectedOpportunities = () => {
   const [opportunities, setOpportunities] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const { _id } = useEmail();
+  const _id = localStorage.getItem('id');
   const [showPendingDialog, setShowPendingDialog] = useState(false);
   const [showRejectedDialog, setShowRejectedDialog] = useState(false);
   const [showAcceptedDialog, setShowAcceptedDialog] = useState(false);
   const [showInterviewDetailsDialog, setShowInterviewDetailsDialog] = useState(false);
   const [interviewDetails, setInterviewDetails] = useState(null);
-
-
+  const { t } = useTranslation();
 
 
   const handleClosePendingDialog = () => setShowPendingDialog(false);
@@ -121,7 +120,7 @@ const SelectedOpportunities = () => {
 
   return (
     <>
-<div className='s-opp-page'>
+    <div className='s-opp-page'>
       {opportunities.length > 0 ? (
         opportunities.map((opp) => (
           <div key={opp._id} className='opp-card' onClick={() => handleOpportunityClick(opp)}>
@@ -129,72 +128,80 @@ const SelectedOpportunities = () => {
               {getStatusIcon(opp.applicantStatus)}
             </div>
             <div className='information col-11'>
-              <p><b>{opp.field}</b> Opportunity at <b>{opp.companyName}</b> Company</p>
-              {opp.applicantStatus!=='waiting' && <p className={getStatusClass(opp.applicantStatus)}><u>Status: {opp.applicantStatus}</u></p>}
-              {opp.applicantStatus==='waiting' && <p className={getStatusClass(opp.applicantStatus)}><u>Status: Waiting for the interview</u></p>}
+              <p>{t('selectedOpportunities.opportunityAtCompany', { field: opp.field, companyName: opp.companyName })}</p>
+              {opp.applicantStatus!=='waiting' && <p className={getStatusClass(opp.applicantStatus)}><u>{t('selectedOpportunities.status', { status: opp.applicantStatus })}</u></p>}
+              {opp.applicantStatus==='waiting' && <p className={getStatusClass(opp.applicantStatus)}><u>{t('selectedOpportunities.waitingForInterview')}</u></p>}
             </div>
           </div>
         ))
       ) : (
-        <p className='no'>No opportunities found.</p>
+        <p className='no'>{t('selectedOpportunities.noOpportunitiesFound')}</p>
       )}
     </div>
-        <Modal show={showPendingDialog} onHide={handleClosePendingDialog}>
+    <Modal show={showPendingDialog} onHide={handleClosePendingDialog}>
         <Modal.Header closeButton>
-          <Modal.Title>Pending Request</Modal.Title>
+          <Modal.Title>{t('selectedOpportunities.pendingRequest')}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          Your request is still pending. Please check back later for an update.
+          {t('selectedOpportunities.pendingRequestMessage')}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClosePendingDialog}>
-            Close
+            {t('selectedOpportunities.close')}
           </Button>
         </Modal.Footer>
       </Modal>
+
       <Modal show={showRejectedDialog} onHide={handleCloseRejectedDialog}>
         <Modal.Header closeButton>
-          <Modal.Title>Rejected Request</Modal.Title>
+          <Modal.Title>{t('selectedOpportunities.rejectedRequest')}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          Unfortunately, you were not selected for this opportunity by the company. We wish you better luck with other opportunities.
+          {t('selectedOpportunities.rejectedRequestMessage')}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseRejectedDialog}>
-            Close
+            {t('selectedOpportunities.close')}
           </Button>
         </Modal.Footer>
       </Modal>
+
       <Modal show={showAcceptedDialog} onHide={handleCloseAcceptedDialog}>
         <Modal.Header closeButton>
-          <Modal.Title>Accepted Request</Modal.Title>
+          <Modal.Title>{t('selectedOpportunities.acceptedRequest')}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-        Congratulations, you have been accepted by the company advertising this training opportunity. The company will contact you soon for more details
+          {t('selectedOpportunities.acceptedRequestMessage')}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseAcceptedDialog}>
-            Close
+            {t('selectedOpportunities.close')}
           </Button>
         </Modal.Footer>
       </Modal>
-      <Modal show={showInterviewDetailsDialog} onHide={() => setShowInterviewDetailsDialog(false)}>
-      <Modal.Header closeButton>
-        <Modal.Title>Interview Details</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        Congratulations! Your application has been accepted for an interview.
-        <div>Type: {interviewDetails?.type}</div>
-        <div>Date: {formatDate(interviewDetails?.date)}</div>
-        <div>Time: {interviewDetails?.time}</div>
-        {interviewDetails?.type === 'online' && <div>Link: <Link to={interviewDetails?.link}>{interviewDetails?.link}</Link></div>}
-        {interviewDetails?.type === 'in-person' && <div>Address: {interviewDetails?.address}</div>}
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={() => setShowInterviewDetailsDialog(false)}>Close</Button>
-      </Modal.Footer>
-    </Modal>
 
+      <Modal show={showInterviewDetailsDialog} onHide={() => setShowInterviewDetailsDialog(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>{t('selectedOpportunities.interviewDetails')}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {t('selectedOpportunities.interviewDetailsMessage')}
+          <div>{t('selectedOpportunities.interviewType', { type: interviewDetails?.type })}</div>
+          <div>{t('selectedOpportunities.interviewDate', { date: formatDate(interviewDetails?.date) })}</div>
+          <div>{t('selectedOpportunities.interviewTime', { time: interviewDetails?.time })}</div>
+          {interviewDetails?.type === 'online' && (
+            <div>{t('selectedOpportunities.interviewLink', { link: interviewDetails?.link })}</div>
+          )}
+          {interviewDetails?.type === 'in-person' && (
+            <div>{t('selectedOpportunities.interviewAddress', { address: interviewDetails?.address })}</div>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowInterviewDetailsDialog(false)}>
+            {t('selectedOpportunities.close')}
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 };

@@ -10,8 +10,8 @@ import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import fields from "../../../helpers/fields"
-
+import fields from "../../../helpers/fields";
+import { useTranslation } from 'react-i18next';
 
 const AllOpportunities = () => {
   const [opportunities, setOpportunities] = useState([]);
@@ -22,6 +22,7 @@ const AllOpportunities = () => {
   const [filter, setFilter] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const fetchCompanyName = async (companyId) => {
     try {
@@ -35,7 +36,7 @@ const AllOpportunities = () => {
 
   const fetchOpportunities = async () => {
     try {
-      const response = await axios.get('http://localhost:3001/opportunities');
+      const response = await axios.get('http://localhost:3001/opps');
       const opportunitiesWithCompanyNames = await Promise.all(
         response.data.map(async (opportunity) => {
           const companyName = await fetchCompanyName(opportunity.companyId);
@@ -93,19 +94,19 @@ const AllOpportunities = () => {
       ) : (
         <Container className="all-opportunities-page">
           <Row className='addition'>
-          <Col className='select col-12'>
-              <Form.Select value={filter} onChange={(e) => setFilter(e.target.value)} className='internal-select'>
-                <option value="">All Fields</option>
+            <Col className='select col-12'>
+              <Form.Select value={filter} onChange={(e) => setFilter(e.target.value)} className='internal-select dr'>
+                <option value="">{t('allOpportunities.allFields')}</option>
                 {fields.map((field, index) => (
                   <option key={index} value={field}>{field}</option>
                 ))}
               </Form.Select>
             </Col>
-            <Col className='search col-12'>
-            <FontAwesomeIcon icon={faSearch} className="search-icon" />
+            <Col className='search dr col-12'>
+              <FontAwesomeIcon icon={faSearch} className="search-icon" />
               <Form.Control
                 type="text"
-                placeholder="Search by Company Name"
+                placeholder={t('allOpportunities.searchPlaceholder')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className='in'
@@ -130,25 +131,24 @@ const AllOpportunities = () => {
                       className="btn-delete"
                       disabled={deletingOpportunity === opportunity._id}
                     >
-                      {deletingOpportunity === opportunity._id ? 'Deleting...' : 'Delete Opportunity'}
+                      {deletingOpportunity === opportunity._id ? t('allOpportunities.deleting') : t('allOpportunities.deleteOpportunity')}
                     </Button>
                   </div>
                 </Col>
               ))
             ) : (
               <Col>
-                <h2>There are no opportunities for the selected criteria</h2>
+                <h2>{t('allOpportunities.noOpportunities')}</h2>
               </Col>
             )}
           </Row>
           <ConfirmDialog
             visible={displayDialog}
             onHide={() => setDisplayDialog(false)}
-            message="Are you sure you want to delete this opportunity?"
-            header="Confirmation"
-            icon="pi pi-exclamation-triangle"
-            acceptLabel="Yes"
-            rejectLabel="No"
+            message={t('allOpportunities.confirmMessage')}
+            header={t('allOpportunities.confirmHeader')}
+            acceptLabel={t('allOpportunities.yes')}
+            rejectLabel={t('allOpportunities.no')}
             acceptClassName="p-button-danger"
             accept={handleDeleteClick}
           />

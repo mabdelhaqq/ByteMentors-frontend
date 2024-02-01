@@ -4,7 +4,8 @@ import './Registerc.scss';
 import axios from 'axios';
 import cities from '../../../helpers/cities';
 import { toast } from 'react-toastify';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 const Registerc = () => {
   const navigate = useNavigate();
@@ -15,9 +16,12 @@ const Registerc = () => {
   const [city, setCity] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [description, setDescription] = useState("");
+  const [website, setWebsite] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [formSubmitting, setFormSubmitting] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const createCompany = async (e) => {
     e.preventDefault();
@@ -33,7 +37,8 @@ const Registerc = () => {
         password: password,
         city: city,
         phoneNumber: phoneNumber,
-        description: description
+        description: description,
+        website: website,
       });
       setCompanyName("");
       setEmail("");
@@ -42,6 +47,7 @@ const Registerc = () => {
       setCity("");
       setPhoneNumber("");
       setDescription("");
+      setWebsite("");
       setEmailError("");
       setPasswordError("");
       navigate('/login');
@@ -62,7 +68,7 @@ const Registerc = () => {
     <div className="registerc-container">
       <h2>Company Registration</h2>
       <form onSubmit={createCompany}>
-      <div className="form-group">
+        <div className="form-group">
           <label htmlFor="name">Company Name</label>
           <input
             type="text"
@@ -87,32 +93,50 @@ const Registerc = () => {
         </div>
         <div className="form-group">
           <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+          <div className="pass">
+            <input
+              type={showPassword ? "text" : "password"}
+              id="password"
+              name="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            {password && (
+              <FontAwesomeIcon
+                icon={showPassword ? faEyeSlash : faEye}
+                className="password-toggle-icon"
+                onClick={() => setShowPassword(!showPassword)}
+              />
+            )}
+          </div>
         </div>
         <div className="form-group">
           <label htmlFor="confirmPassword">Confirm Password</label>
-          <input
-            type="password"
-            id="confirmPassword"
-            name="confirmPassword"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            onBlur={() => {
-              if (password !== confirmPassword) {
-                setPasswordError("Passwords do not match");
-              } else {
-                setPasswordError("");
-              }
-            }}
-            required
-          />
+          <div className="pass">
+            <input
+              type={showConfirmPassword ? "text" : "password"}
+              id="confirmPassword"
+              name="confirmPassword"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              onBlur={() => {
+                if (password !== confirmPassword) {
+                  setPasswordError("Passwords do not match");
+                } else {
+                  setPasswordError("");
+                }
+              }}
+              required
+            />
+            {confirmPassword && (
+              <FontAwesomeIcon
+                icon={showConfirmPassword ? faEyeSlash : faEye}
+                className="password-toggle-icon"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              />
+            )}
+          </div>
           {passwordError && <div className="error-message">{passwordError}</div>}
         </div>
         <div className="form-group">
@@ -123,7 +147,7 @@ const Registerc = () => {
             value={city}
             onChange={(e) => setCity(e.target.value)}
           >
-           <option value="">Select Location</option>
+            <option value="">Select Location</option>
             {cities.map((city, index) => (
               <option key={index} value={city}>
                 {city}
@@ -140,6 +164,16 @@ const Registerc = () => {
             name="phoneNumber"
             value={phoneNumber}
             onChange={(e) => setPhoneNumber(e.target.value)}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="website">Company Website</label>
+          <input
+            type="text"
+            id="website"
+            name="website"
+            value={website}
+            onChange={(e) => setWebsite(e.target.value)}
           />
         </div>
         <div className="form-group">

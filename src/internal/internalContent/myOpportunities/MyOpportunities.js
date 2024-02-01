@@ -4,13 +4,15 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom'; 
 import Spinner from '../../../assets/spinner/Spinner';
 import './MyOpportunities.scss';
-import { useEmail } from '../../../helpers/EmailContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faExclamation } from '@fortawesome/free-solid-svg-icons';
+import { useTranslation } from 'react-i18next';
 
 const MyOpportunities = () => {
   const [opportunities, setOpportunities] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const { _id } = useEmail();
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
+  const { t } = useTranslation();
 
   useEffect(() => {
     fetchOpportunities();
@@ -19,9 +21,8 @@ const MyOpportunities = () => {
   const fetchOpportunities = async () => {
     setIsLoading(true);
     try {
-      const companyId = _id.toString();
+      const companyId = localStorage.getItem('id').toString();
       const response = await axios.get(`http://localhost:3001/opportunitiesc?companyId=${companyId}`);
-
       setOpportunities(response.data);
     } catch (error) {
       console.error('Error fetching opportunities', error);
@@ -48,20 +49,39 @@ const MyOpportunities = () => {
         <Col md={12}>
           <div className="add-button-container">
             <Link to="/home/myopp/addop">
-              <Button variant="primary">Add new opportunity</Button>
+              <Button variant="primary">{t('myOpportunities.addNewOpportunity')}</Button>
             </Link>
             {isLoading && <Spinner />}
           </div>
           <div className="opportunities-list">
             {opportunities.length > 0 ? (
-              opportunities.map((opportunity) => (
-                <div key={opportunity._id} className="opportunity-item" onClick={() => handleTitleClick(opportunity._id)}>
-                  <h3>{opportunity.field}</h3>
-                  <p><span className='dead'>Deadline: </span>{formatDeadline(opportunity.deadline)}</p>
-                </div>
-              ))
+              opportunities
+                .sort((a, b) => new Date(a.deadline) - new Date(b.deadline))
+                .map((opportunity) => (
+                  <div
+                    key={opportunity._id}
+                    className={`opportunity-item ${
+                      new Date(opportunity.deadline) < new Date() ? 'deadline-passed' : ''
+                    }`}
+                    onClick={() => handleTitleClick(opportunity._id)}
+                  >
+                    <div className='info'>
+                      <h3>{opportunity.field}</h3>
+                      <p>
+                        <span className='dead'>{t('myOpportunities.deadline')}: </span>
+                        {formatDeadline(opportunity.deadline)}
+                      </p>
+                    </div>
+                    {new Date(opportunity.deadline) < new Date() && (
+                      <div className='ex'>
+                        <FontAwesomeIcon icon={faExclamation} className="deadline-icon" />
+                        <h2 className='h-ex'>{t('myOpportunities.expired')}</h2>
+                      </div>
+                    )}
+                  </div>
+                ))
             ) : (
-              <p className='no'>No opportunities available. Add opportunities now.</p>
+              <p className='no'>{t('myOpportunities.noOpportunities')}</p>
             )}
           </div>
         </Col>

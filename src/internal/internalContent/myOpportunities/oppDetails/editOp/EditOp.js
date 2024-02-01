@@ -3,20 +3,21 @@ import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import Spinner from '../../../../../assets/spinner/Spinner';
-import './EditOp.scss'
-import { useEmail } from '../../../../../helpers/EmailContext';
-import fields from "../../../../../helpers/fields"
+import './EditOp.scss';
+import fields from "../../../../../helpers/fields";
+import { useTranslation } from 'react-i18next';
 
 const EditOp = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { _id } = useEmail();
+  const _id = localStorage.getItem('id');
   const [field, setField] = useState('');
   const [deadline, setDeadline] = useState('');
   const [description, setDescription] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [validationError, setValidationError] = useState('');
+  const { t } = useTranslation();
 
   useEffect(() => {
     fetchOpportunityDetails();
@@ -33,10 +34,10 @@ const EditOp = () => {
         setDeadline(formattedDeadline);
         setDescription(opportunityData.description);
       } else {
-        console.error('Failed to fetch opportunity details');
+        console.error(t('editOpportunity.failedToFetchDetails'));
       }
     } catch (error) {
-      console.error('Error fetching opportunity details', error);
+      console.error(t('editOpportunity.errorFetchingDetails'));
     } finally {
       setIsLoading(false);
     }
@@ -61,7 +62,7 @@ const EditOp = () => {
   const handlePublishClick = async () => {
     setIsSaving(true);
     if (!field || !deadline || !description) {
-      setValidationError('All required fields must be filled out');
+      setValidationError(t('editOpportunity.allFieldsRequired'));
       setIsSaving(false);
       return;
     }
@@ -77,10 +78,10 @@ const EditOp = () => {
       if (response.data.success) {
         navigate('/home/myopp');
       } else {
-        console.error(response.data.error || 'Failed to edit opportunity');
+        console.error(t('editOpportunity.failedToEdit'));
       }
     } catch (error) {
-      setValidationError(error.response.data.error || 'Error editing opportunity');
+      setValidationError(t('editOpportunity.errorEditing'));
     } finally {
       setIsSaving(false);
     }
@@ -96,8 +97,8 @@ const EditOp = () => {
         <Col md={{ span: 6, offset: 3 }}>
           <Form>
             <Form.Group controlId="formField">
-            <Form.Control as="select" onChange={handleFieldChange} value={field} required>
-                <option value="">Select Field</option>
+              <Form.Control className='dr' as="select" onChange={handleFieldChange} value={field} required>
+                <option value="">{t('editOpportunity.selectField')}</option>
                 {fields.map((fieldOption, index) => (
                   <option key={index} value={fieldOption}>{fieldOption}</option>
                 ))}
@@ -107,15 +108,15 @@ const EditOp = () => {
               <Form.Control type="date" onChange={handleDeadlineChange} value={deadline} required />
             </Form.Group>
             <Form.Group controlId="formDescription">
-              <Form.Control as="textarea" placeholder='Write a description about this opportunity' rows={4} onChange={handleDescriptionChange} value={description} required />
+              <Form.Control className='dr' as="textarea" placeholder={t('editOpportunity.writeDescription')} rows={4} onChange={handleDescriptionChange} value={description} required />
             </Form.Group>
             <div className='btns'>
               <Button variant="success" onClick={handlePublishClick} disabled={isSaving}>
-                {isSaving ? 'Saving...' : 'Save'}
+                {isSaving ? t('editOpportunity.saving') : t('editOpportunity.save')}
               </Button>
-              <Button variant="danger" onClick={handleCancelClick}>Cancel</Button>
+              <Button variant="danger" onClick={handleCancelClick}>{t('editOpportunity.cancel')}</Button>
             </div>
-            {validationError && <p className='error-message'>{validationError}</p>}
+            {validationError && <p className='error-message'>{t(`editOpportunity.${validationError}`)}</p>}
           </Form>
         </Col>
       </Row>

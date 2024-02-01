@@ -9,9 +9,14 @@
       border: 1px solid #ccc;
       padding: 10px;
       margin-bottom: 10px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
 
       &:hover {
-        background-color: #f0f0f0;
+        background-color: rgb(185, 185, 185);
         border-radius: 5px;
       }
 
@@ -21,6 +26,21 @@
 
       .dead {
         font-weight: 500;
+      }
+      .ex {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        .deadline-icon {
+          color: red;
+          font-size: 20px;
+          
+        }
+        .h-ex {
+          color: red;
+          font-size: 20px;
+        }
       }
 
       p {

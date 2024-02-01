@@ -4,6 +4,10 @@ import './Registers.scss';
 import axios from 'axios';
 import cities from '../../../helpers/cities';
 import { toast } from 'react-toastify';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+
+
 
 
 const Registers = () => {
@@ -21,6 +25,10 @@ const Registers = () => {
   const [passwordError, setPasswordError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [formSubmitting, setFormSubmitting] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+
 
   const createStudent = async (e) => {
     e.preventDefault();
@@ -96,19 +104,29 @@ const Registers = () => {
         </div>
         <div className="form-group">
           <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+          <div className="pass">
+            <input
+              type={showPassword ? "text" : "password"}
+              id="password"
+              name="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            {password && (
+              <FontAwesomeIcon
+                icon={showPassword ? faEyeSlash : faEye}
+                className="password-toggle-icon"
+                onClick={() => setShowPassword(!showPassword)}
+              />
+            )}
+          </div>
         </div>
         <div className="form-group">
-          <label htmlFor="confirmPassword">Confirm Password</label>
-          <input
-            type="password"
+        <label htmlFor="confirmPassword">Confirm Password</label>
+          <div className="pass">
+            <input
+            type={showConfirmPassword ? "text" : "password"}
             id="confirmPassword"
             name="confirmPassword"
             value={confirmPassword}
@@ -120,8 +138,16 @@ const Registers = () => {
                 setPasswordError("");
               }
             }}
-            required
-          />
+              required
+            />
+            {confirmPassword && (
+              <FontAwesomeIcon
+                icon={showConfirmPassword ? faEyeSlash : faEye}
+                className="password-toggle-icon"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              />
+            )}
+          </div>
           {passwordError && <div className="error-message">{passwordError}</div>}
         </div>
         <div className="form-group">

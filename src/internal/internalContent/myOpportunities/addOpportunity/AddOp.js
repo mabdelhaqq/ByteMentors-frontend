@@ -2,17 +2,18 @@ import React, { useState } from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useEmail } from '../../../../helpers/EmailContext';
 import './AddOp.scss';
 import fields from "../../../../helpers/fields";
+import { useTranslation } from 'react-i18next';
 
 const AddOp = () => {
   const navigate = useNavigate();
-  const { _id } = useEmail();
+  const _id = localStorage.getItem('id'); 
   const [field, setField] = useState('');
   const [deadline, setDeadline] = useState('');
   const [description, setDescription] = useState('');
   const [validationError, setValidationError] = useState('');
+  const { t } = useTranslation();
 
   const handleFieldChange = (e) => {
     setField(e.target.value);
@@ -35,7 +36,7 @@ const AddOp = () => {
 
   const handlePublishClick = async () => {
     if (!field || !deadline || !description) {
-      setValidationError('All required fields must be filled out');
+      setValidationError(t('addOpportunity.allFieldsRequired'));
       return;
     }
     setValidationError('');
@@ -50,10 +51,10 @@ const AddOp = () => {
       if (response.data.success) {
         navigate('/home/myopp');
       } else {
-        console.error(response.data.error || 'Failed to add opportunity');
+        setValidationError(t('addOpportunity.failedToAddOpportunity'));
       }
     } catch (error) {
-      setValidationError(error.response.data.error || 'Error adding opportunity');
+      setValidationError(t('addOpportunity.errorAddingOpportunity'));
     }
   };
 
@@ -63,8 +64,8 @@ const AddOp = () => {
         <Col md={{ span: 6, offset: 3 }}>
           <Form>
             <Form.Group controlId="formField">
-            <Form.Control as="select" onChange={handleFieldChange} value={field} required>
-                <option value="">Select Field</option>
+              <Form.Control className='dr' as="select" onChange={handleFieldChange} value={field} required>
+                <option value="">{t('addOpportunity.selectField')}</option>
                 {fields.map((fieldOption, index) => (
                   <option key={index} value={fieldOption}>{fieldOption}</option>
                 ))}
@@ -74,11 +75,11 @@ const AddOp = () => {
               <Form.Control type="date" onChange={handleDeadlineChange} value={deadline} required />
             </Form.Group>
             <Form.Group controlId="formDescription">
-              <Form.Control as="textarea" placeholder='Write a description about this opportunity' rows={4} onChange={handleDescriptionChange} value={description} required />
+              <Form.Control className='dr' as="textarea" placeholder={t('addOpportunity.writeDescription')} rows={4} onChange={handleDescriptionChange} value={description} required />
             </Form.Group>
             <div className='btns'>
-              <Button variant="success" onClick={handlePublishClick}>Publish</Button>
-              <Button variant="danger" onClick={handleCancelClick}>Cancel</Button>
+              <Button variant="success" onClick={handlePublishClick}>{t('addOpportunity.publishButton')}</Button>
+              <Button variant="danger" onClick={handleCancelClick}>{t('addOpportunity.cancelButton')}</Button>
             </div>
             {validationError && <p className='error-message'>{validationError}</p>}
           </Form>

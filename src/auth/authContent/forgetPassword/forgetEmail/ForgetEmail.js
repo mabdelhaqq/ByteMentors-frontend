@@ -8,10 +8,12 @@ const ForgetEmail = () => {
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [sending, setSending] = useState(false);
 
   const handleSendCode = async (e) => {
     e.preventDefault();
     try {
+      setSending(true);
       const response = await axios.post("http://localhost:3001/forgetpassword", { email });
       if (response.data.success) {
         setStep(2);
@@ -24,6 +26,8 @@ const ForgetEmail = () => {
       } else {
         setErrorMessage("An error occurred. Please try again.");
       }
+    } finally {
+      setSending(false);
     }
   };
 
@@ -41,8 +45,8 @@ const ForgetEmail = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
-              <button type="submit" onClick={handleSendCode}>
-                Send Code
+              <button type="submit" onClick={handleSendCode} disabled={sending}>
+                {sending ? "Sending..." : "Send Code"}
               </button>
             </form>
             {errorMessage && <p className="error-message">{errorMessage}</p>}

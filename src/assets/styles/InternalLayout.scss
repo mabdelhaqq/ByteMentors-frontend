@@ -24,7 +24,24 @@
             @media (max-width: 992px) {
                 width: 100%;
               }
+              
+              &.light {
+                background-color: gainsboro;
+                color: black;
+              }
             
+              &.dark {
+                background-color: #0d1117;
+                color: white;
+            
+                p, h2 {
+                  color: white;
+                }
+                input, .dr {
+                    background-color: #24292F;
+                    color: white;
+                }
+              }
         }
     }
 }

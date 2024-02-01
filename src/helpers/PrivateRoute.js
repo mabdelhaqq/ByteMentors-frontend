@@ -1,20 +1,19 @@
 import React from 'react';
-import { Navigate, Route } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import { useEmail } from './EmailContext';
 import Authorize from './Authorize';
 
 const PrivateRoute = ({ path, element, roles }) => {
   const { email } = useEmail();
+  const isAuthenticated = Boolean(email);
 
-  if (email) {
-    return (
-      <Authorize roles={roles}>
-        <Route path={path} element={element} />
-      </Authorize>
-    );
-  } else {
-    return <Navigate to="/login" />;
-  }
+  return isAuthenticated ? (
+    <Routes>
+      <Route path={path} element={<Authorize roles={roles}>{element}</Authorize>} />
+    </Routes>
+  ) : (
+    <Navigate to="/login" />
+  );
 };
 
 export default PrivateRoute;

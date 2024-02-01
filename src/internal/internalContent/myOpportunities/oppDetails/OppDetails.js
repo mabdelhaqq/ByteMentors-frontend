@@ -7,7 +7,7 @@ import Spinner from '../../../../assets/spinner/Spinner';
 import { useUserType } from '../../../../helpers/UserTypeContext';
 import { format } from 'date-fns';
 import { toast } from 'react-toastify';
-import { useEmail } from '../../../../helpers/EmailContext';
+import { useTranslation } from 'react-i18next';
 
 const OppDetails = () => {
   const navigate = useNavigate();
@@ -18,7 +18,8 @@ const OppDetails = () => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [hasApplied, setHasApplied] = useState(false);
   const { userType } = useUserType();
-  const { _id } = useEmail();
+  const _id = localStorage.getItem('id');
+  const { t } = useTranslation();
 
   useEffect(() => {
     fetchOpportunityDetails();
@@ -107,7 +108,7 @@ const OppDetails = () => {
   }
 
   if (!opportunity) {
-    return <div>Opportunity not found.</div>;
+    return <div>{t('oppDetails.opportunityNotFound')}</div>;
   }
 
   return (
@@ -118,53 +119,39 @@ const OppDetails = () => {
             {userType === 'company' && (
               <div className="button-group">
                 <Button variant="primary" onClick={handleSubmitterClick}>
-                  Submitter: {opportunity.submitterCount}
+                  {t('oppDetails.submitterCount')}{opportunity.submitterCount}
                 </Button>
                 <Button variant="success" onClick={handleEditClick}>
-                  Edit this opportunity
+                  {t('oppDetails.editOpportunity')}
                 </Button>
                 <Button variant="danger" onClick={handleDeleteClick} disabled={isDeleting}>
-                  {isDeleting ? 'Deleting...' : 'Delete this opportunity'}
+                  {isDeleting ? t('oppDetails.deleting') : t('oppDetails.deleteOpportunity')}
                 </Button>
               </div>
             )}
             <div className="opportunity-info">
               { userType !== 'company' && (
-              <p>
-                <b>Company: </b>
-                <span onClick={()=> {
-                  navigate(`/home/personalcompanyn/${opportunity.companyId}`);
-                }}>{companyName}</span>
-              </p>
+                <p><b>{t('oppDetails.company')}</b> <span onClick={()=> navigate(`/home/personalcompanyn/${opportunity.companyId}`)}>{companyName}</span></p>
               )}
-              <p>
-                <b>Field: </b>
-                {opportunity.field}
-              </p>
-              <p>
-                <b>Deadline: </b>
-                {format(new Date(opportunity.deadline), 'yyyy-MM-dd')}
-              </p>
-              <p>
-                <b>Description: </b>
-                {opportunity.description}
-              </p>
+              <p><b>{t('oppDetails.field')}</b> {opportunity.field}</p>
+              <p><b>{t('oppDetails.deadline')}</b> {format(new Date(opportunity.deadline), 'yyyy-MM-dd')}</p>
+              <p><b>{t('oppDetails.description')}</b> {opportunity.description}</p>
             </div>
             {userType === 'student' && (
               <div className="button-group">
                 <Button variant="primary" onClick={handleSubmitClick} disabled={hasApplied}>
-                  {hasApplied ? 'Submitted' : 'Submit'}
+                  {hasApplied ? t('oppDetails.submitted') : t('oppDetails.submit')}
                 </Button>
               </div>
             )}
             {userType === 'company' && (
               <Button variant="secondary" onClick={handleBackClick}>
-                Back to My Opportunities
+                {t('oppDetails.backToMyOpportunities')}
               </Button>
             )}
             {userType === 'admin' && (
               <Button variant="secondary" onClick={handleBackClickO}>
-                Back to All Opportunities
+                {t('oppDetails.backToAllOpportunities')}
               </Button>
             )}
           </>

@@ -15,15 +15,25 @@
       background-color: white;
   
       .title-link-menu, .item-icon-menu {
-        color: black;  // لون النص والأيقونات في الوضع الفاتح
+        color: black;
       }
     }
   
     &.dark {
-      background-color: #2c2c2c;
+      background-color: #24292f;
+      .link-menu {
+        text-decoration: none;
+        width: 100%;
+        padding: 10px 0;
+      
+        &:hover {
+          background-color: gray
+        }
+      }
+      
   
       .title-link-menu, .item-icon-menu {
-        color: white;  // لون النص والأيقونات في الوضع الداكن
+        color: white;
       }
     }
   

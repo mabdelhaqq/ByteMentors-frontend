@@ -1,17 +1,19 @@
+// AddAdmin.js
 import React, { useState } from 'react';
 import axios from 'axios';
 import './AddAdmin.scss';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const AddAdmin = () => {
   const [email, setEmail] = useState('');
   const [agreed, setAgreed] = useState(false);
   const [error, setError] = useState('');
-  const [generatedPassword, setGeneratedPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const generatePassword = () => {
     return Math.random().toString(36).slice(-10);
@@ -19,12 +21,12 @@ const AddAdmin = () => {
 
   const handleAddAdmin = async () => {
     if (!agreed) {
-      setError('You must agree to grant permissions.');
+      setError('agreementError');
       return;
     }
 
     if (!email) {
-      setError('Please enter a valid email.');
+      setError('emailError');
       return;
     }
 
@@ -32,16 +34,15 @@ const AddAdmin = () => {
     setIsLoading(true);
 
     const password = generatePassword();
-    setGeneratedPassword(password);
 
     try {
       await axios.post('http://localhost:3001/addAdmin', { email, password });
-      toast.success('Admin added successfully');
+      toast.success(t('Admin added successfully'));
       setEmail('');
       setAgreed(false);
       navigate("/home/settings");
     } catch (error) {
-      setError('Failed to add admin. Email might already be in use.');
+      setError('addError');
     } finally {
       setIsLoading(false);
     }
@@ -49,10 +50,10 @@ const AddAdmin = () => {
 
   return (
     <div className="add-admin-page">
-      <h2>Please enter the new admin's email</h2>
+      <h2>{t('addAdmin.title')}</h2>
       <input
         type="email"
-        placeholder="Email"
+        placeholder={t('addAdmin.emailPlaceholder')}
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
@@ -62,14 +63,12 @@ const AddAdmin = () => {
           checked={agreed}
           onChange={() => setAgreed(!agreed)}
         />
-        <label>
-          I agree to grant the entered email admin permissions including the ability to view all students, companies, manage accounts, opportunities, and training plans.
-        </label>
+        <label>{t('addAdmin.agreeLabel')}</label>
       </div>
       <button onClick={handleAddAdmin} disabled={isLoading}>
-        {isLoading ? 'Adding...' : 'Add'}
+        {isLoading ? t('addAdmin.addingButton') : t('addAdmin.addButton')}
       </button>
-      {error && <p className="error">{error}</p>}
+      {error && <p className="error">{t(`addAdmin.${error}`)}</p>}
     </div>
   );
 };

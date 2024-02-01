@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import './AllStudents.scss';
 import Spinner from '../../../assets/spinner/Spinner';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { ConfirmDialog } from 'primereact/confirmdialog';
-import 'primereact/resources/themes/saga-blue/theme.css';
-import 'primereact/resources/primereact.min.css';
-import 'primeicons/primeicons.css';
-import user from "../../../assets/images/user.png"
+import user from "../../../assets/images/user.png";
+import { useTranslation } from 'react-i18next';
 
 const AllStudents = () => {
   const [students, setStudents] = useState([]);
@@ -20,6 +18,7 @@ const AllStudents = () => {
   const [displayDialog, setDisplayDialog] = useState(false);
   const [studentIdToDelete, setStudentIdToDelete] = useState(null);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   useEffect(() => {
     fetchStudents();
@@ -73,10 +72,10 @@ const AllStudents = () => {
         <Spinner />
       ) : (
         <Container className="all-students-page">
-          <div className="searchb">
+          <div className="searchb dr">
             <FontAwesomeIcon icon={faSearch} className="icon-search" />
             <input
-              placeholder="Search"
+              placeholder={t('allStudents.searchPlaceholder')}
               className="input-search"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -91,36 +90,36 @@ const AllStudents = () => {
                       <img src={student.profileImage || user} alt={student.name} />
                     </div>
                     <div className='name-stu col-6'>
-                    <h6 className="student-name">{student.name}</h6>
+                      <h6 className="student-name">{student.name}</h6>
                     </div>
                     <div className='delete-btn col-4'>
-                    <Button
-                      variant="danger"
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        confirmDelete(student._id);
-                      }}
-                      className="btn-delete"
-                      disabled={deletingStudent === student._id}
-                    >
-                      {deletingStudent === student._id ? 'Deleting...' : 'Delete Account'}
-                    </Button>
+                      <Button
+                        variant="danger"
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          confirmDelete(student._id);
+                        }}
+                        className="btn-delete"
+                        disabled={deletingStudent === student._id}
+                      >
+                        {deletingStudent === student._id ? t('allStudents.deleting') : t('allStudents.deleteAccount')}
+                      </Button>
                     </div>
                   </div>
                 </Col>
               ))
             ) : (
-              <h2>There are no matching students</h2>
+              <h2>{t('allStudents.noMatchingStudents')}</h2>
             )}
           </Row>
           <ConfirmDialog
             visible={displayDialog}
             onHide={() => setDisplayDialog(false)}
-            message="Are you sure you want to delete this account?"
-            header="Confirmation"
+            message={t('allStudents.confirmMessage')}
+            header={t('allStudents.confirmHeader')}
             icon="pi pi-exclamation-triangle"
-            acceptLabel="Yes"
-            rejectLabel="No"
+            acceptLabel={t('allStudents.yes')}
+            rejectLabel={t('allStudents.no')}
             acceptClassName="p-button-danger"
             accept={handleDeleteClick}
           />

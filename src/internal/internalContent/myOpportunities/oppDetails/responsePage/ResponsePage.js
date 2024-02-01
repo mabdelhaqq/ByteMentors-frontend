@@ -6,6 +6,7 @@ import Spinner from '../../../../../assets/spinner/Spinner';
 import { useParams, useNavigate } from 'react-router-dom';
 import user from '../../../../../assets/images/user.png';
 import { ConfirmDialog } from 'primereact/confirmdialog';
+import { useTranslation } from 'react-i18next';
 
 const ResponsePage = () => {
   const [pendingApplicants, setPendingApplicants] = useState([]);
@@ -23,13 +24,13 @@ const ResponsePage = () => {
   const [interviewLink, setInterviewLink] = useState('');
   const [interviewAddress, setInterviewAddress] = useState('');
   const { id } = useParams();
-  const opportunityId = id;
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchApplicants = async () => {
       try {
-        const response = await axios.get(`http://localhost:3001/opportunity/${opportunityId}/applicants`);
+        const response = await axios.get(`http://localhost:3001/opportunity/${id}/applicants`);
         if (response.data.length > 0) {
           const pending = [], accepted = [], rejected = [], waiting = [];
           response.data.forEach(applicant => {
@@ -60,7 +61,7 @@ const ResponsePage = () => {
     };
 
     fetchApplicants();
-  }, [opportunityId]);
+  }, [id]);
 
   const handleStudentClick = (studentId) => {
     navigate(`/home/personalstudentn/${studentId}`);
@@ -74,7 +75,7 @@ const ResponsePage = () => {
 
   const confirmAccept = async () => {
     try {
-      const response = await axios.post(`http://localhost:3001/opportunity/${opportunityId}/accept/${selectedStudentId}`);
+      const response = await axios.post(`http://localhost:3001/opportunity/${id}/accept/${selectedStudentId}`);
       if (response.data.success) {
         updateApplicantStatus('accepted', selectedStudentId);
       } else {
@@ -94,7 +95,7 @@ const ResponsePage = () => {
 
   const confirmReject = async () => {
     try {
-      const response = await axios.post(`http://localhost:3001/opportunity/${opportunityId}/reject/${selectedStudentId}`);
+      const response = await axios.post(`http://localhost:3001/opportunity/${id}/reject/${selectedStudentId}`);
       if (response.data.success) {
         updateApplicantStatus('rejected', selectedStudentId);
       } else {
@@ -120,7 +121,7 @@ const ResponsePage = () => {
         ...(interviewType === 'online' ? { interviewLink } : {}),
         ...(interviewType === 'in-person' ? { interviewAddress } : {}),
       };
-      const response = await axios.post(`http://localhost:3001/opportunity/${opportunityId}/scheduleInterview/${selectedStudentId}`, interviewData);
+      const response = await axios.post(`http://localhost:3001/opportunity/${id}/scheduleInterview/${selectedStudentId}`, interviewData);
       if (response.data.success) {
         updateApplicantStatus('waiting', selectedStudentId);
       }
@@ -129,6 +130,7 @@ const ResponsePage = () => {
       console.error('Error scheduling interview', error);
     }
   };
+
   const updateApplicantStatus = (newStatus, studentId) => {
     setPendingApplicants(prev => prev.filter(applicant => applicant._id !== studentId));
     setAcceptedApplicants(prev => prev.filter(applicant => applicant._id !== studentId));
@@ -161,14 +163,13 @@ const ResponsePage = () => {
     setShowInterviewModal(false);
   };
 
-
   return (
     <div className="response-page">
       <ConfirmDialog 
         visible={rejectDialogVisible} 
         onHide={() => setRejectDialogVisible(false)} 
-        message="Are you sure you want to reject this applicant?" 
-        header="Confirmation" 
+        message={t('responsePage.confirmReject')} 
+        header={t('responsePage.confirmation')} 
         icon="pi pi-exclamation-triangle" 
         accept={confirmReject} 
         reject={() => setRejectDialogVisible(false)}
@@ -176,8 +177,8 @@ const ResponsePage = () => {
       <ConfirmDialog 
         visible={acceptDialogVisible} 
         onHide={() => setAcceptDialogVisible(false)} 
-        message="Are you sure you want to accept this applicant?" 
-        header="Confirmation" 
+        message={t('responsePage.confirmAccept')} 
+        header={t('confirmation')} 
         icon="pi pi-exclamation-triangle" 
         accept={confirmAccept} 
         reject={() => setAcceptDialogVisible(false)}
@@ -185,21 +186,21 @@ const ResponsePage = () => {
 
       <Modal show={showInterviewModal} onHide={closeInterviewModal}>
         <Modal.Header closeButton>
-          <Modal.Title>Schedule Interview</Modal.Title>
+          <Modal.Title>{t('responsePage.scheduleInterview')}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
             <Form.Group>
               <Form.Check 
                 type="radio" 
-                label="Face to Face" 
+                label={t('responsePage.faceToFace')} 
                 name="interviewType" 
                 value="in-person" 
                 onChange={(e) => setInterviewType(e.target.value)} 
               />
               <Form.Check 
                 type="radio" 
-                label="Online" 
+                label={t('responsePage.online')} 
                 name="interviewType" 
                 value="online" 
                 onChange={(e) => setInterviewType(e.target.value)} 
@@ -208,14 +209,14 @@ const ResponsePage = () => {
             {interviewType === 'in-person' && (
               <Form.Control 
                 type="text" 
-                placeholder="Location" 
+                placeholder={t('responsePage.location')} 
                 onChange={(e) => setInterviewAddress(e.target.value)} 
               />
             )}
             {interviewType === 'online' && (
               <Form.Control 
                 type="text" 
-                placeholder="Meeting Link" 
+                placeholder={t('responsePage.meetingLink')} 
                 onChange={(e) => setInterviewLink(e.target.value)} 
               />
             )}
@@ -230,8 +231,8 @@ const ResponsePage = () => {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={closeInterviewModal}>Cancel</Button>
-          <Button variant="primary" onClick={handleInterviewSubmit}>Save</Button>
+          <Button variant="secondary" onClick={closeInterviewModal}>{t('responsePage.cancel')}</Button>
+          <Button variant="primary" onClick={handleInterviewSubmit}>{t('responsePage.save')}</Button>
         </Modal.Footer>
       </Modal>
 
@@ -239,57 +240,56 @@ const ResponsePage = () => {
         <>
           {totalApplicants === 0 ? (
             <div className="no-applicants">
-              <h2>No Applicants</h2>
-              <p>There are no applicants for this opportunity yet.</p>
+              <h2>{t('responsePage.noApplicants')}</h2>
+              <p>{t('responsePage.noApplicantsMessage')}</p>
             </div>
           ) : (
-            <>
-              {acceptedApplicants.length > 0 && (
-                <ApplicantSection 
-                  className="accepted" 
-                  title="Accepted Responses" 
-                  applicants={acceptedApplicants} 
-                  onClick={handleStudentClick}
-                  openInterviewModal={openInterviewModal} 
-                />
-              )}
-                {waitingApplicants.length > 0 && (
-                <ApplicantSection 
-                  className="waiting" 
-                  title="Waiting for the interview"
-                  applicants={waitingApplicants}
-                  onClick={handleStudentClick}
-                  onAccept={handleAcceptClick} 
-                  onReject={handleRejectClick}
-                />
-              )}
-              {pendingApplicants.length > 0 && (
-                <ApplicantSection 
-                  className="pending" 
-                  title="Pending Responses" 
-                  applicants={pendingApplicants} 
-                  onClick={handleStudentClick}
-                  onAccept={handleAcceptClick} 
-                  onReject={handleRejectClick}
-                  openInterviewModal={openInterviewModal}
-                />
-              )}
-              {rejectedApplicants.length > 0 && (
-                <ApplicantSection 
-                  className="rejected" 
-                  title="Rejected Responses" 
-                  applicants={rejectedApplicants} 
-                  onClick={handleStudentClick}
-                  openInterviewModal={openInterviewModal}
-                />
-              )}
-            </>
-          )}
-        </>
-      )}
-    </div>
-  );
-};
+          <>
+            {acceptedApplicants.length > 0 && (
+              <ApplicantSection
+                className="accepted" 
+                title={t('responsePage.acceptedResponses')}
+                applicants={acceptedApplicants} 
+                onClick={handleStudentClick}
+                openInterviewModal={openInterviewModal} 
+              />
+            )}
+            {waitingApplicants.length > 0 && (
+              <ApplicantSection 
+                className="waiting" 
+                title={t('responsePage.waitingForInterview')}
+                applicants={waitingApplicants}
+                onClick={handleStudentClick}
+                onAccept={handleAcceptClick} 
+                onReject={handleRejectClick}
+              />
+            )}
+            {pendingApplicants.length > 0 && (
+              <ApplicantSection 
+                className="pending" 
+                title={t('responsePage.pendingResponses')}
+                applicants={pendingApplicants} 
+                onClick={handleStudentClick}
+                onAccept={handleAcceptClick} 
+                onReject={handleRejectClick}
+                openInterviewModal={openInterviewModal}
+              />
+            )}
+            {rejectedApplicants.length > 0 && (
+              <ApplicantSection 
+                className="rejected" 
+                title={t('responsePage.rejectedResponses')}
+                applicants={rejectedApplicants} 
+                onClick={handleStudentClick}
+                openInterviewModal={openInterviewModal}
+              />
+            )}
+          </>
+        )}
+      </>
+    )}
+  </div>
+);}
 
 const ApplicantSection = ({ title, applicants, onClick, onAccept, onReject, className, openInterviewModal }) => (
   <div className={className}>

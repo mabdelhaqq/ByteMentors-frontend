@@ -10,6 +10,7 @@ import { ConfirmDialog } from 'primereact/confirmdialog';
 import 'primereact/resources/themes/saga-blue/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
+import { useTranslation } from 'react-i18next';
 
 const PlanDetails = () => {
   const { id } = useParams();
@@ -18,7 +19,7 @@ const PlanDetails = () => {
   const [isLoading, setIsLoading] = useState(true);
   const { userType } = useUserType();
   const [displayDialog, setDisplayDialog] = useState(false);
-  const [planIdToDelete, setPlanIdToDelete] = useState(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchPlanDetails = async () => {
@@ -46,14 +47,12 @@ const PlanDetails = () => {
     navigate('/home/allplans');
   };
   const confirmDelete = () => {
-    setPlanIdToDelete(id);
     setDisplayDialog(true);
   };
 
   const handleDeleteClick = async () => {
-      try {
+    try {
       const response = await axios.delete(`http://localhost:3001/plan/${id}`);
-  
       if (response.data.success) {
         navigate('/home/allplans');
       } else {
@@ -63,42 +62,45 @@ const PlanDetails = () => {
       console.error('Error deleting plan', error);
     }
   };
+
   if (isLoading) {
     return <Spinner />;
   }
 
   if (!plan) {
-    return <div>Plan not found.</div>;
+    return <div>{t('planDetails.planNotFound')}</div>;
   }
 
   return (
     <Container className="plan-details-page">
       <Row>
         <Col md={12}>
-          {userType === 'admin'&&(<div className="buttons-container">
-            <Button variant="primary" onClick={handleEditClick}>Edit this plan</Button>
-            <Button variant="danger" onClick={confirmDelete}>Delete this plan</Button>
-          </div>)}
+          {userType === 'admin' && (
+            <div className="buttons-container">
+              <Button variant="primary" onClick={handleEditClick}>{t('planDetails.editButton')}</Button>
+              <Button variant="danger" onClick={confirmDelete}>{t('planDetails.deleteButton')}</Button>
+            </div>
+          )}
           <div className="plan-info">
-            <h3>Field: {plan.field}</h3>
+            <h3>{t('planDetails.fieldLabel')}{plan.field}</h3>
             <ReactMarkdown>{plan.description}</ReactMarkdown>
           </div>
           <Button variant="secondary" onClick={handleBackClick}>
-              Back to My Plans
-            </Button>
+            {t('planDetails.backButton')}
+          </Button>
         </Col>
       </Row>
       <ConfirmDialog
-            visible={displayDialog}
-            onHide={() => setDisplayDialog(false)}
-            message="Are you sure you want to delete this plan?"
-            header="Confirmation"
-            icon="pi pi-exclamation-triangle"
-            acceptLabel="Yes"
-            rejectLabel="No"
-            acceptClassName="p-button-danger"
-            accept={handleDeleteClick}
-          />
+        visible={displayDialog}
+        onHide={() => setDisplayDialog(false)}
+        message={t('planDetails.confirmDelete')}
+        header="Confirmation"
+        icon="pi pi-exclamation-triangle"
+        acceptLabel="Yes"
+        rejectLabel="No"
+        acceptClassName="p-button-danger"
+        accept={handleDeleteClick}
+      />
     </Container>
   );
 };

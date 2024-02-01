@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import Spinner from '../../../../../assets/spinner/Spinner';
 import './EditPlan.scss';
+import { useTranslation } from 'react-i18next';
 
 const EditPlan = () => {
   const navigate = useNavigate();
@@ -12,6 +13,7 @@ const EditPlan = () => {
   const [description, setDescription] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchPlanDetails = async () => {
@@ -49,7 +51,7 @@ const EditPlan = () => {
 
   const handleSaveClick = async () => {
     if (!field.trim() || !description.trim()) {
-      setError('All required fields must be filled out');
+      setError(t('editPlan.requiredFieldsError'));
       return;
     }
 
@@ -63,10 +65,10 @@ const EditPlan = () => {
       if (response.data.success) {
         navigate('/home/allplans');
       } else {
-        setError(response.data.error || 'Failed to edit plan');
+        setError(t('editPlan.editError'));
       }
     } catch (error) {
-      setError(error.response.data.error || 'Error editing plan');
+      setError(t('editPlan.errorEditing'));
     }
   };
 
@@ -80,14 +82,31 @@ const EditPlan = () => {
         <Col md={{ span: 6, offset: 3 }}>
           <Form>
             <Form.Group controlId="formField">
-              <Form.Control type="text" placeholder="Enter plan field" onChange={handleFieldChange} value={field} required />
+              <Form.Control
+                type="text"
+                placeholder={t('editPlan.enterFieldPlaceholder')}
+                onChange={handleFieldChange}
+                value={field}
+                required
+              />
             </Form.Group>
             <Form.Group controlId="formDescription">
-              <Form.Control as="textarea" placeholder="Write a description about this plan" rows={4} onChange={handleDescriptionChange} value={description} required />
+              <Form.Control
+                as="textarea"
+                placeholder={t('editPlan.writeDescriptionPlaceholder')}
+                rows={4}
+                onChange={handleDescriptionChange}
+                value={description}
+                required
+              />
             </Form.Group>
             <div className='btns'>
-              <Button variant="success" onClick={handleSaveClick}>Save</Button>
-              <Button variant="danger" onClick={handleCancelClick}>Cancel</Button>
+              <Button variant="success" onClick={handleSaveClick}>
+                {t('editPlan.saveButton')}
+              </Button>
+              <Button variant="danger" onClick={handleCancelClick}>
+                {t('editPlan.cancelButton')}
+              </Button>
             </div>
             {error && <p className='error-message'>{error}</p>}
           </Form>

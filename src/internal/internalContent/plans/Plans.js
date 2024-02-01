@@ -5,11 +5,13 @@ import { Link } from 'react-router-dom';
 import Spinner from '../../../assets/spinner/Spinner';
 import './Plans.scss';
 import { useUserType } from '../../../helpers/UserTypeContext';
+import { useTranslation } from 'react-i18next';
 
 const Plans = () => {
   const [plans, setPlans] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const { userType } = useUserType();
+  const { t } = useTranslation();
 
   useEffect(() => {
     fetchPlans();
@@ -36,7 +38,7 @@ const Plans = () => {
             <div className="add-button-container">
               {userType === 'admin' && (
                 <Link to="/home/addplan">
-                  <Button variant="primary">Add new plan</Button>
+                  <Button variant="primary">{t('plans.addNewPlan')}</Button>
                 </Link>
               )}
             </div>
@@ -44,10 +46,11 @@ const Plans = () => {
 
           {userType === 'student' && !isLoading && (
             <div className='note'>
-              <h5>Dear Trainee,</h5>
-              <h5>On this page, you can find various training plans in the fields of technology and computer science. These plans have been carefully curated by experts in the field to assist individuals like yourself in enhancing their skills. You can benefit from these plans and train yourself by following the outlined steps. They are designed to help you strengthen your expertise in specific areas.</h5>
-              <h5>Please note that these training plans may evolve in the future, and alternative options may become available. Stay dedicated to your learning journey, and you'll undoubtedly see progress.</h5>
-              <h5>Best regards,</h5>
+              <h5>{t('plans.traineeNote.header')}</h5>
+              <h5>{t('plans.traineeNote.body1')}</h5>
+              <h5>{t('plans.traineeNote.body2')}</h5>
+              <h5>{t('plans.traineeNote.body3')}</h5>
+              <h5>{t('plans.traineeNote.footer')}</h5>
             </div>
           )}
 
@@ -56,7 +59,7 @@ const Plans = () => {
               {plans.map((plan) => (
                 <div key={plan._id} className="plan-item">
                   <h3>{plan.field}</h3>
-                  <Link to={`/home/plans/${plan._id}`}>View This plan</Link>
+                  <Link to={`/home/plans/${plan._id}`}>{t('plans.viewPlan')}</Link>
                 </div>
               ))}
             </div>

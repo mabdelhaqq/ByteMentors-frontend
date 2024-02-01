@@ -1,7 +1,6 @@
 import { createContext, useContext, useState } from 'react';
 
 const EmailContext = createContext();
-
 export const EmailProvider = ({ children }) => {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
@@ -17,8 +16,9 @@ export const EmailProvider = ({ children }) => {
   const [university, setUniversity] = useState('');
   const [graduationYear, setGraduationYear] = useState('');
   const [preferredField, setPreferredField] = useState('');
-  const [skills, setSkills] = useState([]);
+  const [skills, setSkills] = useState('');
   const [cv, setCv] = useState('');
+  const [website, setWebsite] = useState('');
 
   const setLoggedInEmail = (
     userEmail,
@@ -37,6 +37,7 @@ export const EmailProvider = ({ children }) => {
     preferredField,
     skills,
     cv,
+    website,
   ) => {
     setEmail(userEmail);
     setUsername(username);
@@ -54,6 +55,7 @@ export const EmailProvider = ({ children }) => {
     setPreferredField(preferredField);
     setSkills(skills);
     setCv(cv);
+    setWebsite(website);
   };
 
   return (
@@ -74,6 +76,7 @@ export const EmailProvider = ({ children }) => {
       preferredField,
       skills,
       cv,
+      website,
       setLoggedInEmail
     }}>
       {children}

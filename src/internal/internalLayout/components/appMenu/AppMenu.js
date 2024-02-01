@@ -2,10 +2,11 @@ import React from 'react';
 import './AppMenu.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faMagnifyingGlassLocation, faBriefcase, faFileCode, faGears, faRightFromBracket, faGraduationCap, faChartPie } from '@fortawesome/free-solid-svg-icons';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useTheme } from '../../../../helpers/ThemeContext';
 import { useUserType } from '../../../../helpers/UserTypeContext';
+import { useTheme } from '../../../../helpers/ThemeContext';
+
 const menuItems = [
   {
     icon: faUser,
@@ -63,6 +64,7 @@ const menuItems = [
     forCompany: true,
     forAdmin: false,
   },
+
   {
     icon: faBriefcase,
     title: 'Companies',
@@ -99,19 +101,39 @@ const menuItems = [
 
 const AppMenu = () => {
   const { t, i18n } = useTranslation();
-  const { themeMode } = useTheme();
   const { userType } = useUserType();
-
+  const {themeMode} = useTheme();
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    localStorage.removeItem('email');
+    localStorage.removeItem('userType');
+    localStorage.removeItem('id');
+    localStorage.removeItem('themeMode');
+    localStorage.removeItem('language');
+    localStorage.removeItem('i18nextLng');
+    navigate('/login');
+  };
   return (
     <aside className={`app-menu ${themeMode}`}>
       {menuItems.map((item, index) => (
-        (userType === 'student' && item.forStudent) || (userType === 'company' && item.forCompany) || (userType === 'admin' && item.forAdmin) ? (
-          <Link to={item.path} className="link-menu" key={index}>
-            <div className="item-links-menu">
-              <FontAwesomeIcon icon={item.icon} className="item-icon-menu" />
-              <span className="title-link-menu">{t(item.title)}</span>
+        (userType === 'student' && item.forStudent) ||
+        (userType === 'company' && item.forCompany) ||
+        (userType === 'admin' && item.forAdmin) ? (
+          item.title === 'Log out' ? (
+            <div onClick={handleLogout} className="link-menu" key={index}>
+              <div className="item-links-menu">
+                <FontAwesomeIcon icon={item.icon} className="item-icon-menu" />
+                <span className="title-link-menu">{t(`appMenu.${item.title}`)}</span>
+              </div>
             </div>
-          </Link>
+          ) : (
+            <Link to={item.path} className="link-menu" key={index}>
+              <div className="item-links-menu">
+                <FontAwesomeIcon icon={item.icon} className="item-icon-menu" />
+                <span className="title-link-menu">{t(`appMenu.${item.title}`)}</span>
+              </div>
+            </Link>
+          )
         ) : null
       ))}
     </aside>

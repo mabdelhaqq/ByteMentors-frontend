@@ -39,7 +39,6 @@ import PersonalStudentN from '../internal/internalContent/personalStudentN/Perso
 import AddAdmin from '../internal/internalContent/settings/addAdmin/AddAdmin';
 import Opportunities from '../internal/internalContent/opportunities/Opportunities';
 import SelectedOpportunities from '../internal/internalContent/opportunities/selectedOpportunities/SelectedOpportunities';
-
 const router = createBrowserRouter([
   {
     path: '/',
@@ -124,6 +123,7 @@ const router = createBrowserRouter([
           <Authorize roles={['admin']}><AddPlan /></Authorize>
         ),
       },
+
       {
         path: '/home/plans/:id',
         element: <Authorize roles={['admin', 'student']}><PlanDetails /></Authorize>,

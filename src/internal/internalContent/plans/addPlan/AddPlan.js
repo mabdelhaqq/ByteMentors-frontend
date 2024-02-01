@@ -3,14 +3,17 @@ import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './AddPlan.scss';
-import { useEmail } from '../../../../helpers/EmailContext';
+import { useTranslation } from 'react-i18next';
 
 const AddPlan = () => {
   const navigate = useNavigate();
   const [field, setField] = useState('');
   const [description, setDescription] = useState('');
   const [error, setError] = useState('');
-  const { _id } = useEmail();
+  const { t } = useTranslation();
+
+  const _id = localStorage.getItem('id');
+
   const handleFieldChange = (e) => {
     setField(e.target.value);
   };
@@ -25,7 +28,7 @@ const AddPlan = () => {
 
   const handlePublishClick = async () => {
     if (!field || !description) {
-      setError('All required fields must be filled out');
+      setError('addPlan.requiredError');
       return;
     }
   
@@ -40,10 +43,10 @@ const AddPlan = () => {
       if (response.data.success) {
         navigate('/home/allplans');
       } else {
-        setError(response.data.error || 'Failed to add plan');
+        setError('addPlan.addError');
       }
     } catch (error) {
-      setError(error.response.data.error || 'Error adding plan');
+      setError('addPlan.generalError');
     }
   };
   
@@ -53,16 +56,16 @@ const AddPlan = () => {
         <Col md={{ span: 6, offset: 3 }}>
           <Form>
             <Form.Group controlId="formField">
-              <Form.Control type="text" placeholder="Enter plan field" onChange={handleFieldChange} value={field} required />
+              <Form.Control type="text" placeholder={t('addPlan.fieldPlaceholder')} onChange={handleFieldChange} value={field} required />
             </Form.Group>
             <Form.Group controlId="formDescription">
-              <Form.Control as="textarea" placeholder="Write a description about this plan" rows={4} onChange={handleDescriptionChange} value={description} required />
+              <Form.Control className='dr' as="textarea" placeholder={t('addPlan.descriptionPlaceholder')} rows={4} onChange={handleDescriptionChange} value={description} required />
             </Form.Group>
             <div className='btns'>
-              <Button variant="success" onClick={handlePublishClick}>Publish</Button>
-              <Button variant="danger" onClick={handleCancelClick}>Cancel</Button>
+              <Button variant="success" onClick={handlePublishClick}>{t('addPlan.publishButton')}</Button>
+              <Button variant="danger" onClick={handleCancelClick}>{t('addPlan.cancelButton')}</Button>
             </div>
-            {error && <p className='error-message'>{error}</p>}
+            {error && <p className='error-message'>{t(error)}</p>}
           </Form>
         </Col>
       </Row>
@@ -70,4 +73,4 @@ const AddPlan = () => {
   );
 };
 
-export default AddPlan;
+export default AddPlan

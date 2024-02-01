@@ -4,6 +4,7 @@ import './Login.scss';
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faGoogle, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { useEmail } from '../../../helpers/EmailContext';
 import { useUserType } from '../../../helpers/UserTypeContext';
 
@@ -11,6 +12,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const { email, setLoggedInEmail } = useEmail();
   const { setUser } = useUserType();
   const navigate = useNavigate();
@@ -40,6 +42,8 @@ const Login = () => {
         const description = nameResponsef.data.description;
         const nameResponsefi = await axios.get(`http://localhost:3001/getlinkedin?email=${email}`);
         const linkedin = nameResponsefi.data.linkedin;
+        const nameResponseweb = await axios.get(`http://localhost:3001/getwebsite?email=${email}`);
+        const website = nameResponseweb.data.website;
         const nameResponses = await axios.get(`http://localhost:3001/getprofileimage?email=${email}`);
         const profileImage = nameResponses.data.profileImage;
         const nameResponsid = await axios.get(`http://localhost:3001/getid?email=${email}`);
@@ -61,8 +65,12 @@ const Login = () => {
         const nameResponsecv = await axios.get(`http://localhost:3001/getcv?email=${email}`);
         const cv = nameResponsecv.data.cv;
         setLoggedInEmail(email, name, city, phoneNumber, description, linkedin, profileImage, _id, 
-          github, gender, graduate, university, graduationYear, preferredField, skills, cv);
+          github, gender, graduate, university, graduationYear, preferredField, skills, cv, website);
         setUser(response.data.userType);
+        localStorage.setItem('email', email);
+        localStorage.setItem('id', _id);
+        localStorage.setItem('userType', response.data.userType);
+        localStorage.setItem('themeMode', 'light');
         navigate('/home');
       } else {
         setErrorMessage('Email or password incorrect');
@@ -91,14 +99,23 @@ const Login = () => {
           value={email}
           onChange={(e) => setLoggedInEmail(e.target.value)}
         />
-        <input
-          type="password"
-          placeholder="Your password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <div className="pass">
+          <input
+            type={showPassword ? "text" : "password"}
+            placeholder="Your password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          {password && (
+            <FontAwesomeIcon
+              icon={showPassword ? faEyeSlash : faEye}
+              className="password-toggle-icon"
+              onClick={() => setShowPassword(!showPassword)}
+            />
+          )}
+        </div>
         <div className="password-options">
-          <Link to='/login/forgetemail' className='forget'><p>Forget password?</p></Link>
+        <p><Link to='/login/forgetemail' className='forget'>Forget password?</Link></p>
         </div>
         <button className="signin-button" onClick={handleLogin} disabled={loading}>
           {loading ? 'Loading...' : 'Login'}
