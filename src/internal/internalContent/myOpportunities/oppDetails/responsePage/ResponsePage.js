@@ -153,7 +153,7 @@ const ResponsePage = () => {
     }
   };
   
-  const totalApplicants = pendingApplicants.length + acceptedApplicants.length + rejectedApplicants.length;
+  const totalApplicants = pendingApplicants.length + acceptedApplicants.length + rejectedApplicants.length + waitingApplicants.length;
   const openInterviewModal = (studentId) => {
     setSelectedStudentId(studentId);
     setShowInterviewModal(true);
