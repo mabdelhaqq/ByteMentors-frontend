@@ -19,7 +19,6 @@ const MyOpportunities = () => {
   }, []);
 
   const fetchOpportunities = async () => {
-    setIsLoading(true);
     try {
       const companyId = localStorage.getItem('id').toString();
       const response = await axios.get(`http://localhost:3001/opportunitiesc?companyId=${companyId}`);
@@ -51,11 +50,12 @@ const MyOpportunities = () => {
             <Link to="/home/myopp/addop">
               <Button variant="primary">{t('myOpportunities.addNewOpportunity')}</Button>
             </Link>
-            {isLoading && <Spinner />}
           </div>
-          <div className="opportunities-list">
-            {opportunities.length > 0 ? (
-              opportunities
+          {isLoading ? (
+            <Spinner />
+          ) : opportunities.length > 0 ? (
+            <div className="opportunities-list">
+              {opportunities
                 .sort((a, b) => new Date(a.deadline) - new Date(b.deadline))
                 .map((opportunity) => (
                   <div
@@ -79,11 +79,11 @@ const MyOpportunities = () => {
                       </div>
                     )}
                   </div>
-                ))
-            ) : (
-              <p className='no'>{t('myOpportunities.noOpportunities')}</p>
-            )}
-          </div>
+                ))}
+            </div>
+          ) : (
+            <p className='no'>{t('myOpportunities.noOpportunities')}</p>
+          )}
         </Col>
       </Row>
     </Container>

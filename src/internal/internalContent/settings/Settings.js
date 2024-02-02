@@ -21,7 +21,7 @@ const Settings = () => {
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const { userType } = useUserType();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { themeMode, toggleTheme } = useTheme();
   const { changeLang } = useLanguage();
   const navigate = useNavigate();

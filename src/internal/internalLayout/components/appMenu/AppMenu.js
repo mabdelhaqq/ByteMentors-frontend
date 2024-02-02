@@ -1,7 +1,7 @@
 import React from 'react';
 import './AppMenu.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faMagnifyingGlassLocation, faBriefcase, faFileCode, faGears, faRightFromBracket, faGraduationCap, faChartPie } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faMagnifyingGlassLocation, faBriefcase, faFileCode, faGears, faRightFromBracket, faGraduationCap } from '@fortawesome/free-solid-svg-icons';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useUserType } from '../../../../helpers/UserTypeContext';
@@ -100,7 +100,7 @@ const menuItems = [
 ];
 
 const AppMenu = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { userType } = useUserType();
   const {themeMode} = useTheme();
   const navigate = useNavigate();
@@ -120,9 +120,9 @@ const AppMenu = () => {
         (userType === 'company' && item.forCompany) ||
         (userType === 'admin' && item.forAdmin) ? (
           item.title === 'Log out' ? (
-            <div onClick={handleLogout} className="link-menu" key={index}>
+            <div onClick={handleLogout} className="link-menu" key={index} style={{cursor: "pointer"}}>
               <div className="item-links-menu">
-                <FontAwesomeIcon icon={item.icon} className="item-icon-menu" />
+                <FontAwesomeIcon icon={item.icon} className="item-icon-menu"/>
                 <span className="title-link-menu">{t(`appMenu.${item.title}`)}</span>
               </div>
             </div>

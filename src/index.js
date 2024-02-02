@@ -8,7 +8,6 @@ import { EmailProvider } from './helpers/EmailContext';
 import { ThemeProvider } from './helpers/ThemeContext';
 import { LanguageProvider } from './helpers/LanguageContext';
 import { UserTypeProvider } from './helpers/UserTypeContext';
-import { StudentProvider } from './helpers/StudentContext';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -16,9 +15,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <ThemeProvider>
         <LanguageProvider>
           <UserTypeProvider>
-            <StudentProvider>
               <AppRoutes />
-            </StudentProvider>
           </UserTypeProvider>
         </LanguageProvider>
       </ThemeProvider>

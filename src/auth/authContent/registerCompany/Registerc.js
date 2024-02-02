@@ -23,6 +23,7 @@ const Registerc = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+
   const createCompany = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
@@ -69,7 +70,7 @@ const Registerc = () => {
       <h2>Company Registration</h2>
       <form onSubmit={createCompany}>
         <div className="form-group">
-          <label htmlFor="name">Company Name</label>
+          <label htmlFor="name">Company Name <span className="required">*</span></label>
           <input
             type="text"
             id="name"
@@ -80,7 +81,7 @@ const Registerc = () => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="email">Company Email</label>
+          <label htmlFor="email">Company Email <span className="required">*</span></label>
           <input
             type="email"
             id="email"
@@ -92,7 +93,7 @@ const Registerc = () => {
           {emailError && <div className="error-message">{emailError}</div>}
         </div>
         <div className="form-group">
-          <label htmlFor="password">Password</label>
+          <label htmlFor="password">Password <span className="required">*</span></label>
           <div className="pass">
             <input
               type={showPassword ? "text" : "password"}
@@ -112,7 +113,7 @@ const Registerc = () => {
           </div>
         </div>
         <div className="form-group">
-          <label htmlFor="confirmPassword">Confirm Password</label>
+          <label htmlFor="confirmPassword">Confirm Password <span className="required">*</span></label>
           <div className="pass">
             <input
               type={showConfirmPassword ? "text" : "password"}
@@ -140,12 +141,13 @@ const Registerc = () => {
           {passwordError && <div className="error-message">{passwordError}</div>}
         </div>
         <div className="form-group">
-          <label htmlFor="location">Location</label>
+          <label htmlFor="location">Location <span className="required">*</span></label>
           <select
             id="location"
             name="location"
             value={city}
             onChange={(e) => setCity(e.target.value)}
+            required 
           >
             <option value="">Select Location</option>
             {cities.map((city, index) => (
@@ -157,13 +159,14 @@ const Registerc = () => {
           </select>
         </div>
         <div className="form-group">
-          <label htmlFor="phoneNumber">Phone Number</label>
+          <label htmlFor="phoneNumber">Phone Number <span className="required">*</span></label>
           <input
             type="tel"
             id="phoneNumber"
             name="phoneNumber"
             value={phoneNumber}
             onChange={(e) => setPhoneNumber(e.target.value)}
+            required
           />
         </div>
         <div className="form-group">

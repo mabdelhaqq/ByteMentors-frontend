@@ -35,7 +35,7 @@ const AddPlan = () => {
     setError('');
     try {
       const response = await axios.post('http://localhost:3001/addPlan', {
-        adminId : _id,
+        adminId: _id,
         field,
         description,
       });
@@ -43,13 +43,12 @@ const AddPlan = () => {
       if (response.data.success) {
         navigate('/home/allplans');
       } else {
-        setError('addPlan.addError');
+        setError(response.data.error ? response.data.error : 'addPlan.addError');
       }
     } catch (error) {
-      setError('addPlan.generalError');
+      setError(error.response && error.response.data && error.response.data.error ? error.response.data.error : 'addPlan.generalError');
     }
-  };
-  
+  };  
   return (
     <Container className="add-plan-page">
       <Row>

@@ -109,18 +109,23 @@ const Header = () => {
   };
 
   const getNotificationItems = () => {
-    return notifications.map(notification => (
-      <div 
-        key={notification._id} 
-        className={`notification-item ${notification.isRead ? '' : 'unread'} ${!notification.opened ? 'not-opened' : ''}`}
-        onClick={() => handleNotificationClick(notification._id)}
-      >
-        <h4>{notification.type}</h4>
-        <p>{notification.message}</p>
-        <small>{formatDistanceToNow(new Date(notification.createdAt), { addSuffix: true })}</small>
-      </div>
-    ));
+    if (notifications.length === 0) {
+      return <div className="notification-item no-notifications"><p>No notifications</p></div>;
+    } else {
+      return notifications.map(notification => (
+        <div 
+          key={notification._id} 
+          className={`notification-item ${notification.isRead ? '' : 'unread'} ${!notification.opened ? 'not-opened' : ''}`}
+          onClick={() => handleNotificationClick(notification._id)}
+        >
+          <h4>{notification.type}</h4>
+          <p>{notification.message}</p>
+          <small>{formatDistanceToNow(new Date(notification.createdAt), { addSuffix: true })}</small>
+        </div>
+      ));
+    }
   };
+  
 
   return (
     <header className={`in-header ${themeMode}`}>

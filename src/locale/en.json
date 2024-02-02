@@ -139,7 +139,8 @@
         "English": "English",
         "Arabic": "Arabic",
         "DeleteAccountButton": "Click here to delete your account", 
-        "theme": "Themes"
+        "theme": "Themes", 
+        "deleting": "Deleting..."
       }, 
       "footer": {
         "copyright": "Copyright 2023. All Rights Reserved. | Byte Mentor"

@@ -21,6 +21,10 @@ const Login = () => {
     setLoggedInEmail('');
   }, []);
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    handleLogin(e);
+  };
   const handleLogin = async (e) => {
     e.preventDefault();
     setErrorMessage('');
@@ -93,6 +97,7 @@ const Login = () => {
           <FontAwesomeIcon icon={faLinkedinIn} className='social-button lin' />
         </div>
         <p className="or-divider">or</p>
+        <form onSubmit={handleSubmit}>
         <input
           type="text"
           placeholder="Your email"
@@ -120,6 +125,7 @@ const Login = () => {
         <button className="signin-button" onClick={handleLogin} disabled={loading}>
           {loading ? 'Loading...' : 'Login'}
         </button>
+        </form>
         {errorMessage && <p className="error-message">{errorMessage}</p>}
       </div>
       <div className="signup-discover col-12 col-lg-4">

@@ -1,5 +1,5 @@
 import React from 'react';
-import { createBrowserRouter, RouterProvider, Routes, Route } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider, Routes } from 'react-router-dom';
 import ExternalLayout from '../external/externalLayout/ExternalLayout';
 import MainPage from '../external/externalContent/main/MainPage';
 import Why from '../external/externalContent/why/Why';
@@ -20,11 +20,9 @@ import PersonalCompany from '../internal/internalContent/personalCompany/Persona
 import Settings from '../internal/internalContent/settings/Settings';
 import Companies from '../internal/internalContent/companies/Companies';
 import Authorize from './Authorize';
-import CompanyDetails from '../internal/internalContent/companyDetails/CompanyDetails';
 import MyOpportunities from '../internal/internalContent/myOpportunities/MyOpportunities';
 import AddOp from '../internal/internalContent/myOpportunities/addOpportunity/AddOp';
 import OppDetails from '../internal/internalContent/myOpportunities/oppDetails/OppDetails';
-import { OppProvider } from './OppContext';
 import ResponsePage from '../internal/internalContent/myOpportunities/oppDetails/responsePage/ResponsePage';
 import AllStudents from '../internal/internalContent/allStudents/AllStudents';
 import AllCompanies from '../internal/internalContent/allCompanies/AllCompanies';
@@ -76,16 +74,8 @@ const router = createBrowserRouter([
         element: <Authorize roles={['student']}><PersonalStudent /></Authorize>,
       },
       {
-        path: '/home/personalstudent/:studentId?',
-        element: <Authorize roles={['company']}><PersonalStudent /></Authorize>,
-      },
-      {
         path: '/home/personalcomapny',
         element: <Authorize roles={['company']}><PersonalCompany /></Authorize>,
-      },
-      {
-        path: '/home/personalcompany/:companyId?',
-        element: <Authorize roles={['student', 'admin']}><PersonalStudent /></Authorize>,
       },
       {
         path: '/home/allstudent',
@@ -109,13 +99,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/home/myopp/addop',
-        element: (
-          <Authorize roles={['company']}>
-            <OppProvider>
-              <AddOp />
-            </OppProvider>
-          </Authorize>
-        ),
+        element: <Authorize roles={['company']}><AddOp /></Authorize>,
       },
       {
         path: '/home/addplan',
@@ -123,7 +107,6 @@ const router = createBrowserRouter([
           <Authorize roles={['admin']}><AddPlan /></Authorize>
         ),
       },
-
       {
         path: '/home/plans/:id',
         element: <Authorize roles={['admin', 'student']}><PlanDetails /></Authorize>,
@@ -150,13 +133,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/home/myopp/editop/:id',
-        element: (
-          <Authorize roles={['company']}>
-            <OppProvider>
-              <EditOp />
-            </OppProvider>
-          </Authorize>
-        ),
+        element: <Authorize roles={['company']}><EditOp /></Authorize>,
       },
       {
         path: '/home/allplans/edit/:id',
@@ -166,7 +143,6 @@ const router = createBrowserRouter([
         path: '/home/myopp/response/:id',
         element: <Authorize roles={['company']}><ResponsePage /></Authorize>,
       },
-    
       {
         path: '/home/opp',
         element: <Authorize roles={['student']}><Opportunities /></Authorize>,
@@ -175,15 +151,6 @@ const router = createBrowserRouter([
         path: '/home/companies',
         element: <Authorize roles={['student']}><Companies /></Authorize>,
       },
-      {
-        path: '/home/companies/:companyId',
-        element: <Authorize roles={['student']}><CompanyDetails /></Authorize>,
-      },
-
-      // {
-      //   path: '/plans',
-      //   element: <Authorize roles={['student']}><TrainingPlans /></Authorize>,
-      // },
       {
         path: '/home/settings',
         element: <Settings />,

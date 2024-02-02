@@ -1,4 +1,3 @@
-// UserTypeContext.js
 import { createContext, useContext, useState } from 'react';
 
 const UserTypeContext = createContext();

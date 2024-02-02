@@ -20,7 +20,7 @@ const Help = () => {
 
         <ul>
           <li>
-          <strong>ِAdmin email:</strong> <a href="mailto:mohamad4112002@gmail.com">mohamad4112002@gmail.com</a>
+          <strong>ِAdmin email:</strong> <a href="mailto:bytementor6@gmail.com">bytementor6@gmail.com</a>
           </li>
           <li>
             <strong>Phone:</strong>+970598077631

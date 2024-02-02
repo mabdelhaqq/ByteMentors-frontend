@@ -20,7 +20,6 @@ const Opportunities = () => {
   const [selectedField, setSelectedField] = useState('');
   const [selectedCity, setSelectedCity] = useState('');
   const [sortBy, setSortBy] = useState('deadline');
-  const [allOpportunities, setAllOpportunities] = useState([]);
   const navigate = useNavigate();
   const { t } = useTranslation();
   const themeMode = localStorage.getItem('themeMode');
@@ -42,7 +41,6 @@ const Opportunities = () => {
       );  
       const processedOther = await processOpportunitiesO(filteredOther);
       setOtherOpportunities(processedOther);
-      setAllOpportunities([...processedRecommended, ...processedOther]);
     } catch (error) {
       console.error('Error fetching opportunities:', error);
     } finally {

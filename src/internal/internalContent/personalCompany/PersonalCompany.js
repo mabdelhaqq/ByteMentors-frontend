@@ -11,6 +11,7 @@ const PersonalCompany = () => {
   const _id = localStorage.getItem('id');
   const [editMode, setEditMode] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
   const [editedInfo, setEditedInfo] = useState({
     companyName: '',
     email: '',
@@ -33,7 +34,7 @@ const PersonalCompany = () => {
       if (response.data.success) {
         const companyData = response.data.company;
         setEditedInfo({
-          companyName: companyData.username,
+          companyName: companyData.companyName,
           email: companyData.email,
           city: companyData.city,
           phoneNumber: companyData.phoneNumber,
@@ -52,6 +53,7 @@ const PersonalCompany = () => {
 
   const handleEditClick = () => {
     setEditMode(true);
+    setError("");
   };
 
   const handleCancelClick = () => {
@@ -59,6 +61,10 @@ const PersonalCompany = () => {
   };
   
   const handleSaveClick = async () => {
+    if (!editedInfo.companyName.trim() || !editedInfo.city.trim() || !editedInfo.phoneNumber.trim()) {
+      setError("There are required fields");
+      return;
+    }
     try {
       const response = await axios.put(`http://localhost:3001/updateCompany/${_id}`, {
         ...editedInfo,
@@ -192,24 +198,26 @@ const PersonalCompany = () => {
                 </Form.Group>
 
                 <Form.Group className='form-group' controlId="formCompanyName">
-                  <Form.Label>{t('personalCompany.companyName')}</Form.Label>
+                  <Form.Label>{t('personalCompany.companyName')} <span className="required">*</span></Form.Label>
                   <Form.Control
                     type="text"
                     placeholder={t('personalCompany.enterCompanyName')}
                     name="companyName"
                     value={editedInfo.companyName}
                     onChange={handleInputChange}
+                    required
                   />
                 </Form.Group>
 
                 <Form.Group controlId="formCity" className='form-group'>
-                  <Form.Label>{t('personalCompany.location')}</Form.Label>
+                  <Form.Label>{t('personalCompany.location')} <span className="required">*</span></Form.Label>
                   <Form.Control
                     className='dr'
                     as="select"
                     name="city"
                     value={editedInfo.city}
                     onChange={handleInputChange}
+                    required
                   >
                     <option value="">{t('personalCompany.selectCity')}</option>
                     {cities.map((city, index) => (
@@ -221,13 +229,14 @@ const PersonalCompany = () => {
                 </Form.Group>
 
                 <Form.Group controlId="formPhoneNumber" className='form-group'>
-                  <Form.Label>{t('personalCompany.phoneNumber')}</Form.Label>
+                  <Form.Label>{t('personalCompany.phoneNumber')} <span className="required">*</span></Form.Label>
                   <Form.Control
                     type="text"
                     placeholder={t('personalCompany.enterPhoneNumber')}
                     name="phoneNumber"
                     value={editedInfo.phoneNumber}
                     onChange={handleInputChange}
+                    required
                   />
                 </Form.Group>
 
@@ -273,6 +282,7 @@ const PersonalCompany = () => {
                     {t('personalCompany.cancel')}
                   </Button>
                 </div>
+                {error && <p style={{textAlign: "center", color: "red"}}>{error}</p>}
               </Form>
             )}
           </div>

@@ -12,6 +12,7 @@ const PersonalStudent = () => {
   const [editMode, setEditMode] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [newSkill, setNewSkill] = useState('');
+  const [error, setError] = useState("");
   const [editedInfo, setEditedInfo] = useState({
     name: '',
     city: '',
@@ -67,6 +68,7 @@ const PersonalStudent = () => {
 
   const handleEditClick = () => {
     setEditMode(true);
+    setError("");
   };
 
   const handleCancelClick = () => {
@@ -75,6 +77,12 @@ const PersonalStudent = () => {
   };
 
   const handleSaveClick = async () => {
+    if (!editedInfo.name.trim() || !editedInfo.city.trim() || !editedInfo.phoneNumber.trim()
+    || !editedInfo.university.trim() || editedInfo.graduationYear === '0' || editedInfo.graduationYear === '' || !editedInfo.gender.trim()
+  ) {
+      setError("There are required fields");
+      return;
+    }
     try {
       const response = await axios.put(`http://localhost:3001/updateStudent/${_id}`, {
         ...editedInfo,
@@ -267,7 +275,7 @@ const PersonalStudent = () => {
           </div>
           {editMode && (
             <Form>
-              <Form.Group controlId="formProfileImage">
+              <Form.Group controlId="formProfileImage" className='form-div'>
                 <Form.Label className='l'>{t('personalStudent.profileImage')}</Form.Label>
                 <Form.Control
                   type="file"
@@ -283,25 +291,27 @@ const PersonalStudent = () => {
                 )}
               </Form.Group>
 
-              <Form.Group controlId="formName">
-                <Form.Label className='l'>{t('personalStudent.name')}</Form.Label>
+              <Form.Group controlId="formName" className='form-div'>
+                <Form.Label className='l'>{t('personalStudent.name')} <span className="required">*</span></Form.Label>
                 <Form.Control
                   type="text"
                   placeholder={t('personalStudent.enterName')}
                   name="name"
                   value={editedInfo.name}
                   onChange={handleInputChange}
+                  required
                 />
               </Form.Group>
 
-              <Form.Group controlId="formCity">
-                <Form.Label className='l'>{t('personalStudent.city')}</Form.Label>
+              <Form.Group controlId="formCity" className='form-div'>
+                <Form.Label className='l'>{t('personalStudent.city')} <span className="required">*</span></Form.Label>
                 <Form.Control
                   className='dr'
                   as="select"
                   name="city"
                   value={editedInfo.city}
                   onChange={handleInputChange}
+                  required
                 >
                   <option value="">{t('personalStudent.selectCity')}</option>
                   {cities.map((city, index) => (
@@ -312,18 +322,19 @@ const PersonalStudent = () => {
                 </Form.Control>
               </Form.Group>
 
-              <Form.Group controlId="formPhoneNumber">
-                <Form.Label className='l'>{t('personalStudent.phoneNumber')}</Form.Label>
+              <Form.Group controlId="formPhoneNumber" className='form-div'>
+                <Form.Label className='l'>{t('personalStudent.phoneNumber')} <span className="required">*</span></Form.Label>
                 <Form.Control
                   type="text"
                   placeholder={t('personalStudent.enterPhoneNumber')}
                   name="phoneNumber"
                   value={editedInfo.phoneNumber}
                   onChange={handleInputChange}
+                  required
                 />
               </Form.Group>
 
-              <Form.Group controlId="formBio">
+              <Form.Group controlId="formBio" className='form-div'>
                 <Form.Label className='l'>{t('personalStudent.bio')}</Form.Label>
                 <Form.Control
                   className='dr'
@@ -335,7 +346,7 @@ const PersonalStudent = () => {
                 />
               </Form.Group>
 
-              <Form.Group controlId="formLinkedin">
+              <Form.Group controlId="formLinkedin" className='form-div'>
                 <Form.Label className='l'>{t('personalStudent.linkedin')}</Form.Label>
                 <Form.Control
                   type="text"
@@ -346,7 +357,7 @@ const PersonalStudent = () => {
                 />
               </Form.Group>
 
-              <div className="form-group checkbox-group">
+              <div className="form-group checkbox-group form-div">
                 <label>
                   <input
                     type="checkbox"
@@ -360,31 +371,33 @@ const PersonalStudent = () => {
 
               {editedInfo.graduate && (
                 <>
-                  <Form.Group controlId="formUniversity">
-                    <Form.Label className='l'>{t('personalStudent.university')}</Form.Label>
+                  <Form.Group controlId="formUniversity" className='form-div'>
+                    <Form.Label className='l'>{t('personalStudent.university')} <span className="required">*</span></Form.Label>
                     <Form.Control
                       type="text"
                       placeholder={t('personalStudent.enterUniversity')}
                       name="university"
                       value={editedInfo.university || ''}
                       onChange={handleInputChange}
+                      required
                     />
                   </Form.Group>
 
-                  <Form.Group controlId="formGraduationYear">
-                    <Form.Label className='l'>{t('personalStudent.graduationYear')}</Form.Label>
+                  <Form.Group controlId="formGraduationYear" className='form-div'>
+                    <Form.Label className='l'>{t('personalStudent.graduationYear')} <span className="required">*</span></Form.Label>
                     <Form.Control
                       type="number"
                       placeholder={t('personalStudent.enterGraduationYear')}
                       name="graduationYear"
                       value={editedInfo.graduationYear || ''}
                       onChange={handleInputChange}
+                      required
                     />
                   </Form.Group>
                 </>
               )}
 
-              <Form.Group controlId="formGithub">
+              <Form.Group controlId="formGithub" className='form-div'>
                 <Form.Label className='l'>{t('personalStudent.github')}</Form.Label>
                 <Form.Control
                   type="text"
@@ -395,14 +408,15 @@ const PersonalStudent = () => {
                 />
               </Form.Group>
 
-              <Form.Group controlId="formGender">
-                <Form.Label className='l'>{t('personalStudent.gender')}</Form.Label>
+              <Form.Group controlId="formGender" className='form-div'>
+                <Form.Label className='l'>{t('personalStudent.gender')} <span className="required">*</span></Form.Label>
                 <Form.Control
                   className='dr'
                   as="select"
                   name="gender"
                   value={editedInfo.gender || ''}
                   onChange={handleInputChange}
+                  required
                 >
                   <option value="">{t('personalStudent.selectGender')}</option>
                   <option value="male">{t('personalStudent.male')}</option>
@@ -410,7 +424,7 @@ const PersonalStudent = () => {
                 </Form.Control>
               </Form.Group>
 
-              <Form.Group controlId="formPreferredField" className='ffield'>
+              <Form.Group controlId="formPreferredField" className='ffield form-div'>
                 <Form.Label className='l'>{t('personalStudent.preferredField')}</Form.Label>
                 <Form.Control
                   className='dr'
@@ -428,7 +442,7 @@ const PersonalStudent = () => {
                 </Form.Control>
               </Form.Group>
 
-              <Form.Group controlId="formSkills">
+              <Form.Group controlId="formSkills" className='form-div'>
                   <Form.Label className='l'>{t('personalStudent.skills')}</Form.Label>
                   <Row style={{ marginRight: '10px' }} >
                     <Col md={11}>
@@ -458,7 +472,7 @@ const PersonalStudent = () => {
                     </ul>
                   )}
                 </Form.Group>
-            <Form.Group controlId="formCV">
+            <Form.Group controlId="formCV" className='form-div'>
                 <Form.Label className='l'>{t('personalStudent.cv')}</Form.Label>
                 <Form.Control
                   type="file"
@@ -474,6 +488,7 @@ const PersonalStudent = () => {
                 {t('personalStudent.cancel')}
               </Button>
               </div>
+              {error && <p style={{textAlign: "center", color: "red"}}>{error}</p>}
             </Form>
           )}
         </Col>

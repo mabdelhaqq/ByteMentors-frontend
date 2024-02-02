@@ -126,6 +126,9 @@
     }
     form {
       margin: 0 auto;
+      .required {
+        color: red;
+      }
       .form-group {
         margin-bottom: 10px;
   
@@ -182,4 +185,7 @@
       width: 100px;
     }
   }
+  }
+  .form-div {
+    margin-bottom: 10px;
   }

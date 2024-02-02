@@ -7,7 +7,6 @@ import { useTheme } from '../../../../../../helpers/ThemeContext';
 const Logo = () => {
     const navigate = useNavigate();
     const {themeMode} = useTheme();
-  
     const imageSource = themeMode === 'dark' ? logodark : logo;
   
     return (

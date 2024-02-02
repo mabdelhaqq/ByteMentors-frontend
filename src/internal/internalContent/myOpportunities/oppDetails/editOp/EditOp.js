@@ -116,7 +116,7 @@ const EditOp = () => {
               </Button>
               <Button variant="danger" onClick={handleCancelClick}>{t('editOpportunity.cancel')}</Button>
             </div>
-            {validationError && <p className='error-message'>{t(`editOpportunity.${validationError}`)}</p>}
+            {validationError && <p className='error-message'>{validationError}</p>}
           </Form>
         </Col>
       </Row>

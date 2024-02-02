@@ -7,9 +7,6 @@ import { toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
-
-
-
 const Registers = () => {
   const navigate = useNavigate();
   const [name, setName] = useState("");
@@ -27,8 +24,6 @@ const Registers = () => {
   const [formSubmitting, setFormSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
-
 
   const createStudent = async (e) => {
     e.preventDefault();
@@ -80,7 +75,7 @@ const Registers = () => {
       <h2>Student Registration</h2>
       <form onSubmit={createStudent}>
         <div className="form-group">
-          <label htmlFor="name">Full Name</label>
+          <label htmlFor="name">Full Name <span className="required">*</span></label>
           <input
             type="text"
             id="name"
@@ -91,7 +86,7 @@ const Registers = () => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="email">Email</label>
+          <label htmlFor="email">Email <span className="required">*</span></label>
           <input
             type="email"
             id="email"
@@ -103,7 +98,7 @@ const Registers = () => {
           {emailError && <div className="error-message">{emailError}</div>}
         </div>
         <div className="form-group">
-          <label htmlFor="password">Password</label>
+          <label htmlFor="password">Password <span className="required">*</span></label>
           <div className="pass">
             <input
               type={showPassword ? "text" : "password"}
@@ -123,7 +118,7 @@ const Registers = () => {
           </div>
         </div>
         <div className="form-group">
-        <label htmlFor="confirmPassword">Confirm Password</label>
+        <label htmlFor="confirmPassword">Confirm Password <span className="required">*</span></label>
           <div className="pass">
             <input
             type={showConfirmPassword ? "text" : "password"}
@@ -151,12 +146,13 @@ const Registers = () => {
           {passwordError && <div className="error-message">{passwordError}</div>}
         </div>
         <div className="form-group">
-          <label htmlFor="gender">Gender</label>
+          <label htmlFor="gender">Gender <span className="required">*</span></label>
           <select
             id="gender"
             name="gender"
             value={gender}
             onChange={(e) => setGender(e.target.value)}
+            required
           >
             <option value="">Select Gender</option>
             <option value="male">Male</option>
@@ -164,12 +160,13 @@ const Registers = () => {
           </select>
         </div>
         <div className="form-group">
-          <label htmlFor="city">City</label>
+          <label htmlFor="city">City <span className="required">*</span></label>
           <select
             id="city"
             name="city"
             value={city}
             onChange={(e) => setCity(e.target.value)}
+            required
           >
             <option value="">Select Location</option>
             {cities.map((city, index) => (
@@ -181,13 +178,14 @@ const Registers = () => {
           </select>
         </div>
         <div className="form-group">
-          <label htmlFor="phoneNumber">Phone Number</label>
+          <label htmlFor="phoneNumber">Phone Number <span className="required">*</span></label>
           <input
             type="tel"
             id="phoneNumber"
             name="phoneNumber"
             value={phoneNumber}
             onChange={(e) => setPhoneNumber(e.target.value)}
+            required
           />
         </div>
         <div className="form-group checkbox-group">
@@ -204,23 +202,25 @@ const Registers = () => {
         {graduate && (
           <>
             <div className="form-group">
-              <label htmlFor="university">University</label>
+              <label htmlFor="university">University <span className="required">*</span></label>
               <input
                 type="text"
                 id="university"
                 name="university"
                 value={university}
                 onChange={(e) => setUniversity(e.target.value)}
+                required
               />
             </div>
             <div className="form-group">
-              <label htmlFor="graduationYear">Graduation Year</label>
+              <label htmlFor="graduationYear">Graduation Year <span className="required">*</span></label>
               <input
                 type="text"
                 id="graduationYear"
                 name="graduationYear"
                 value={graduationYear}
                 onChange={(e) => setGraduationYear(e.target.value)}
+                required
               />
             </div>
           </>

@@ -72,57 +72,60 @@
         margin: 10px 0;
         font-size: 1.5rem;
       }
-  
-      input {
+
+      form {
         width: 100%;
-        padding: 10px;
-        margin-bottom: 10px;
-      }
-      .pass {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background-color: white;
-        width: 100%;
-        padding: 10px;
-        margin: 0;
         input {
           width: 100%;
-          padding: 0;
-          margin: 0;
-          border: none;
+          padding: 10px;
+          margin-bottom: 10px;
+        }
+        .pass {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
           background-color: white;
-          outline: none;
-
-        }
-        .password-toggle-icon {
-          font-size: 25px;
-          color: gray;
-        }
-      }
+          width: 100%;
+          padding: 10px;
+          margin: 0;
+          input {
+            width: 100%;
+            padding: 0;
+            margin: 0;
+            border: none;
+            background-color: white;
+            outline: none;
   
-      .password-options {
-        margin-bottom: 10px;
-        width: 100%;
-        p {
-          font-size: 0.8rem;
-          text-align: end;
+          }
+          .password-toggle-icon {
+            font-size: 25px;
+            color: gray;
+          }
         }
-        .forget {
-          text-decoration: none;
+    
+        .password-options {
+          margin-bottom: 10px;
+          width: 100%;
+          p {
+            font-size: 0.8rem;
+            text-align: end;
+          }
+          .forget {
+            text-decoration: none;
+          }
         }
-      }
-      .signin-button {
-        width: 100%;
-        padding: 10px;
-        background-color: #3498db;
-        color: #fff;
-        border: none;
-        cursor: pointer;
-        font-size: 1rem;
-  
-        &:hover {
-          background-color: #007bb5;
+        .signin-button {
+          width: 100%;
+          padding: 10px;
+          background-color: #3498db;
+          color: #fff;
+          border: none;
+          cursor: pointer;
+          font-size: 1rem;
+    
+          &:hover {
+            background-color: #007bb5;
+          }
         }
       }
   
@@ -172,5 +175,9 @@
         }
       }
     }
+    @media (max-width: 768px) {
+      .signup-discover {
+          padding: 20px 10%;
+      }
   }
-  
+  }

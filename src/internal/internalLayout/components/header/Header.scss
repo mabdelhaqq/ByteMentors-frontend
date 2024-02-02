@@ -97,6 +97,13 @@
     width: 420px;
     max-height: 300px;
     overflow-y: auto;
+    .no-notifications {
+      height: 40px;
+      text-align: center;
+      p {
+        font-weight: bold;
+      }
+    }
 
     .notification-item {
       padding: 5px 10px;

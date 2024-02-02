@@ -54,24 +54,26 @@ const EditPlan = () => {
       setError(t('editPlan.requiredFieldsError'));
       return;
     }
-
     setError('');
     try {
       const response = await axios.put(`http://localhost:3001/editPlan/${id}`, {
         field: field.trim(),
         description: description.trim(),
       });
-
+  
       if (response.data.success) {
         navigate('/home/allplans');
       } else {
-        setError(t('editPlan.editError'));
+        setError(t(response.data.error));
       }
     } catch (error) {
-      setError(t('editPlan.errorEditing'));
+      if (error.response && error.response.data.error) {
+        setError(t(error.response.data.error));
+      } else {
+        setError(t('editPlan.errorEditing'));
+      }
     }
   };
-
   if (isLoading) {
     return <Spinner />;
   }
