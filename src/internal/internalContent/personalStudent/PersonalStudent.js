@@ -77,8 +77,7 @@ const PersonalStudent = () => {
   };
 
   const handleSaveClick = async () => {
-    if (!editedInfo.name.trim() || !editedInfo.city.trim() || !editedInfo.phoneNumber.trim()
-    || !editedInfo.university.trim() || editedInfo.graduationYear === '0' || editedInfo.graduationYear === '' || !editedInfo.gender.trim()
+    if (!editedInfo.name.trim() || !editedInfo.city.trim() || !editedInfo.phoneNumber.trim() || !editedInfo.gender.trim()
   ) {
       setError("There are required fields");
       return;
