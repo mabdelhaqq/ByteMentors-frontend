@@ -46,7 +46,7 @@ const PersonalStudent = () => {
           email: studentData.email,
           city: studentData.city,
           phoneNumber: studentData.phoneNumber,
-          bio: studentData.description,
+          bio: studentData.bio,
           linkedin: studentData.linkedin,
           profileImage: studentData.profileImage,
           github: studentData.github,
