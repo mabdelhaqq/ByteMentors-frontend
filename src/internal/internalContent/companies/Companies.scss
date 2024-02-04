@@ -28,18 +28,23 @@
   .link-card {
     text-decoration: none;
     color: black;
-    .img-card {
-      width: 100%
+    .card {
+      height: 320px;
+      .img-card {
+        height: 220px;
+        max-height: 250px;
+      }
+      .title-card {
+        font-weight: bolder;
+        height: 40px;
+      }
+      .city-card {
+        font-style: italic
+      }
+      &:hover {
+        opacity: 0.8;
+      }
     }
-    .title-card {
-      font-weight: bolder;
     }
-    .city-card {
-      font-style: italic
-    }
-    &:hover {
-      opacity: 0.8;
-    }
-  }
 
 }

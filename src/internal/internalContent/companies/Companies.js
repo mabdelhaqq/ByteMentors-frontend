@@ -54,8 +54,8 @@ const Companies = () => {
             {filteredCompanies.map((company) => (
               <Col key={company._id} className="col-6 col-md-4 col-xl-3 mb-1">
                 <Link to={`/home/personalcompanyn/${company._id}`} className='link-card'>
-                  <Card>
-                    <Card.Img className='img-card' variant="top" src={company.profileImage || user} />
+                  <Card className='card'>
+                    <Card.Img className='img-card' variant="top" src={company.profileImage || user}/>
                     <Card.Body className='dr'>
                       <Card.Title className='title-card'>{company.companyName}</Card.Title>
                       <Card.Text className='city-card'>{company.city}</Card.Text>
